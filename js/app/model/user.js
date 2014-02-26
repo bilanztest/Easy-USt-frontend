@@ -49,12 +49,28 @@ define(function(require) {
         }),
         contentType: "application/json; charset=utf-8",
         dataType: "json"
+
       }).done(function(data) {
-        self.set(data.user);
+        var userData = data.user;
+
+        userData.token = data.token;
+        self.set(userData);
+
+        if (EAU.features.localStorage) {
+          localStorage.setItem("user", JSON.stringify(userData));
+        }
+
       }).fail(function() {
         console.log("FAIL", arguments);
       });
       
+    },
+
+    logout: function() {
+      if (EAU.features.localStorage) {
+        localStorage.removeItem("user");
+      }
+      this.clear();
     },
 
     onSync: function(model, response) {
