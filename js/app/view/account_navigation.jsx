@@ -15,7 +15,12 @@ define(function(require) {
       var content, user;
 
       if (this.props.user.isLoggedIn()) {
-        content = <p>Hello {this.props.user.get("email")}</p>;
+        content = (
+          <p>
+            Hello {this.props.user.get("email")}. <a href="/logout" className="main">Logout</a>
+          </p>
+        );
+
       } else {
         content = (
           <p>
