@@ -17,7 +17,7 @@ define(function(require) {
    *
    */
   var BaseView = React.createClass({
-    mixins: [mixins.Backbone],
+    mixins: [mixins.RerenderOnLogin],
 
     getBackboneModels: function() {
       return [this.props.user];
