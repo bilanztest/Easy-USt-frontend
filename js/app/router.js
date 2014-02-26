@@ -2,9 +2,7 @@ define(function(require) {
 
   "use strict";
 
-  var $ = require("jquery");
   var Backbone = require("backbone");
-  var EAU = require("app/ns");
 
   /**
    *
@@ -13,11 +11,10 @@ define(function(require) {
    */
   var Router = Backbone.Router.extend({
     routes: {
-      "*default": "defaultAction"
-    },
- 
-    defaultAction: function() {
-      console.log("Hello, world.");
+      "": "home",
+      "test": "test",
+      "login": "login",
+      "*error": "404"
     }
   }); // end Router
 

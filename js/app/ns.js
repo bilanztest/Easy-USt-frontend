@@ -7,5 +7,8 @@ define(function (require) {
     
   };
 
+  // feature detection flags
+  window.EAU.features = require("app/utils/features");
+
   return window.EAU;
 });
