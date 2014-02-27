@@ -40,10 +40,10 @@ define(function(require) {
 
       if (typeof content === "undefined") {
         content = "Error, page not found";
-
+      
       } else if (content.loginNeeded && !this.props.user.isLoggedIn()) {
         content = "Error, unauthorized";
-
+      
       } else {
         content = content.comp({user: this.props.user});
       }
@@ -57,17 +57,28 @@ define(function(require) {
     },
 
     onClick: function(event) {
-      if (event.target.tagName.toLowerCase() === "a" &&
-          event.target.className === "main") {
-        event.preventDefault();
+      var linkType;
 
-        if (event.target.pathname === "/logout") {
-          this.props.user.logout();
-          this.props.router.navigate("/", {trigger: true});
-          
-        } else {
+      if (event.target.tagName.toLowerCase() === "a") {
+        linkType = event.target.getAttribute("data-link");
+        
+        if (linkType === "main") {
+          event.preventDefault();
           this.props.router.navigate(event.target.pathname, {trigger: true});
+        
+        } else if (linkType === "action") {
+          event.preventDefault();
+
+          if (event.target.pathname === "/logout") {
+            this.props.user.logout();
+            this.props.router.navigate("/", {trigger: true});
+            return;
+          }
+        
+        } else if (linkType === "modal") {
+          event.preventDefault();
         }
+
       }
     },
 

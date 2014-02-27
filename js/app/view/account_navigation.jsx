@@ -17,15 +17,15 @@ define(function(require) {
       if (this.props.user.isLoggedIn()) {
         content = (
           <p>
-            Hello {this.props.user.get("email")}. <a href="/logout" className="main">Logout</a>
+            Hello {this.props.user.get("email")}. <a href="/logout" data-link="action">Logout</a>
           </p>
         );
 
       } else {
         content = (
           <p>
-            <a href="/login" className="main">Login</a>
-            <a href="/register" className="main">Register</a>
+            <a href="/login" data-link="main">Login</a>
+            <a href="/register" data-link="main">Register</a>
           </p>
         );
       }

@@ -30,12 +30,12 @@ define(function(require) {
           return;
         }
 
-        return <li key={index++}><a href={link.href} className="main">{link.label}</a></li>;
+        return <li key={index++}><a href={link.href} data-link="main">{link.label}</a></li>;
       });
 
       return (
         <ul className="eau-main-navigation">
-          <li key="0"><h1><a href="/" className="main">Easy Ust</a></h1></li>
+          <li key="0"><h1><a href="/" data-link="main">Easy Ust</a></h1></li>
           {links}
         </ul>
       );
