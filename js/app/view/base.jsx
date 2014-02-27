@@ -23,29 +23,30 @@ define(function(require) {
       return [this.props.user];
     },
 
+    getInitialState: function() {
+      return {
+        home: {comp: ContentHome, loginNeeded: false},
+        show: {comp: ContentFields, loginNeeded: true},
+        login: {comp: ContentLogin, loginNeeded: false}
+      };
+    },
+
     componentWillMount: function() {
       this.props.router.on("route", this.onPathChanged, this);
     },
 
     render: function() {
-      var content;
+      var content = this.state[this.props.path];
 
-      switch (this.props.path) {
-        case "home":
-          content = <ContentHome user={this.props.user} />;
-          break;
-        case "show":
-          content = <ContentFields user={this.props.user} />;
-          break;
-        case "login":
-          content = <ContentLogin user={this.props.user} />;
-          break;
+      if (typeof content === "undefined") {
+        content = "Error, page not found";
 
-        case "404":
-        default:
-          content = "Error, page not found";
-          break;
-      } 
+      } else if (content.loginNeeded && !this.props.user.isLoggedIn()) {
+        content = "Error, unauthorized";
+
+      } else {
+        content = content.comp({user: this.props.user});
+      }
 
       return (
         <div id="base" onClick={this.onClick}>
