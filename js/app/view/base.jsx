@@ -23,6 +23,10 @@ define(function(require) {
       return [this.props.user];
     },
 
+    componentWillMount: function() {
+      this.props.router.on("route", this.onPathChanged, this);
+    },
+
     render: function() {
       var content;
 
@@ -55,8 +59,18 @@ define(function(require) {
       if (event.target.tagName.toLowerCase() === "a" &&
           event.target.className === "main") {
         event.preventDefault();
-        this.props.router.navigate(event.target.pathname, {trigger: true});
+
+        if (event.target.pathname === "/logout") {
+          this.props.user.logout();
+          this.props.router.navigate("/", {trigger: true});
+        } else {
+          this.props.router.navigate(event.target.pathname, {trigger: true});
+        }
       }
+    },
+
+    onPathChanged: function(action) {
+      this.setProps({path: action});
     }
 
   }); // end BaseView

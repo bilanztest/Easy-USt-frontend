@@ -43,15 +43,6 @@ require(
 
     React.renderComponent(base, document.getElementById("page"));
 
-    router.on("route", function(action) {
-
-      if (action === "logout") {
-        user.logout();
-      } else {
-        base.setProps({path: action});
-      }
-    });
-
     Backbone.history.start({pushState: true});
   }
 );
