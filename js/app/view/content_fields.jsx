@@ -51,6 +51,7 @@ define(function(require) {
 
       return (
         <div id="content">
+          <a href="/add" data-link="modal">+ hinzufügen</a>
           <ul>
             {fields}
           </ul>

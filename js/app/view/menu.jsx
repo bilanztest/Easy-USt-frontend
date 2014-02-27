@@ -15,8 +15,7 @@ define(function(require) {
       return {
         links: [
           {href: "/show", label: "Einträge anzeigen", login: true},
-          {href: "/add", label: "Eintrag hinzufügen", login: true},
-          {href: "/page2", label: "Über EAU", login: false}
+          {href: "/about", label: "Über EAU", login: false}
         ]
       };
     },
