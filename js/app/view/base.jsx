@@ -8,7 +8,7 @@ define(function(require) {
 
   var Header = require("jsx!app/view/header");
   var ContentHome = require("jsx!app/view/content_home");
-  var ContentTest = require("jsx!app/view/content_test");
+  var ContentShow = require("jsx!app/view/content_show");
   var ContentLogin = require("jsx!app/view/content_login");
 
   /**
@@ -34,8 +34,8 @@ define(function(require) {
         case "home":
           content = <ContentHome user={this.props.user} />
           break;
-        case "test":
-          content = <ContentTest user={this.props.user} />
+        case "show":
+          content = <ContentShow user={this.props.user} />
           break;
         case "login":
           content = <ContentLogin user={this.props.user} />

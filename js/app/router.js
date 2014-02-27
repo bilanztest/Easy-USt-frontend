@@ -12,7 +12,7 @@ define(function(require) {
   var Router = Backbone.Router.extend({
     routes: {
       "": "home",
-      "test": "test",
+      "show": "show",
       "login": "login",
       "logout": "logout",
       "*error": "404"
