@@ -7,6 +7,7 @@ define(function(require) {
   var mixins = require("app/utils/mixins");
 
   var Header = require("jsx!app/view/header");
+  
   var ContentHome = require("jsx!app/view/content_home");
   var ContentFields = require("jsx!app/view/content_fields");
   var ContentLogin = require("jsx!app/view/content_login");
@@ -75,8 +76,6 @@ define(function(require) {
             return;
           }
         
-        } else if (linkType === "modal") {
-          event.preventDefault();
         }
 
       }

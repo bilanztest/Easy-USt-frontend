@@ -10,8 +10,8 @@ define(function(require) {
    *
    */
   var Field = Backbone.Model.extend({
-    initialize: function() {
-      
+    initialize: function(attributes, options) {
+      this.url = "/api/field?token=" + options.token;
     }
   }); // end Field
 

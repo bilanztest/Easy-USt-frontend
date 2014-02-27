@@ -4,6 +4,7 @@ define(function(require) {
 
   var React = require("react");
   var Fields = require("app/model/fields");
+  var LayerAdd = require("jsx!app/view/layer_add");
 
   /**
    *
@@ -19,6 +20,10 @@ define(function(require) {
         this.setState({
           fetching: false
         });
+      }, this);
+
+      this.state.fields.on("add remove change", function() {
+        this.forceUpdate();
       }, this);
 
       this.state.fields.fetch({reset: true});
@@ -51,13 +56,34 @@ define(function(require) {
 
       return (
         <div id="content">
-          <a href="/add" data-link="modal">+ hinzufügen</a>
+          <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a>
           <ul>
             {fields}
           </ul>
         </div>
       );
+    },
+
+    // TODO check fetching
+    onClickAddField: function(event) {
+      var $modal = $("#modal"),
+        comp = LayerAdd({
+          user: this.props.user,
+          fields: this.state.fields,
+          onClose: this.onCloseOverlay
+        });
+
+      event.preventDefault();
+      React.renderComponent(comp, $modal[0]);
+    },
+
+    onCloseOverlay: function(event) {
+      var $modal = $("#modal");
+
+      event.preventDefault();
+      React.unmountComponentAtNode($modal[0]);
     }
+
   }); // end ContentShow
 
 
