@@ -37,7 +37,7 @@ define(function(require) {
 
     onSubmit: function() {
       var email = this.refs.email.getDOMNode().value.trim();
-      var pwd = this.refs.pwd.getDOMNode().value.trim();
+      var pwd = this.refs.pwd.getDOMNode().value;
 
       console.log("onSubmit()", email, pwd);
 
@@ -51,7 +51,7 @@ define(function(require) {
       // this.refs.pwd.getDOMNode().value = "";
       
       return false;
-    },
+    }
   }); // end ContentLogin
 
 
