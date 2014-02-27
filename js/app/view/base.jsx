@@ -8,7 +8,7 @@ define(function(require) {
 
   var Header = require("jsx!app/view/header");
   var ContentHome = require("jsx!app/view/content_home");
-  var ContentShow = require("jsx!app/view/content_show");
+  var ContentFields = require("jsx!app/view/content_fields");
   var ContentLogin = require("jsx!app/view/content_login");
 
   /**
@@ -32,13 +32,13 @@ define(function(require) {
 
       switch (this.props.path) {
         case "home":
-          content = <ContentHome user={this.props.user} />
+          content = <ContentHome user={this.props.user} />;
           break;
         case "show":
-          content = <ContentShow user={this.props.user} />
+          content = <ContentFields user={this.props.user} />;
           break;
         case "login":
-          content = <ContentLogin user={this.props.user} />
+          content = <ContentLogin user={this.props.user} />;
           break;
 
         case "404":
@@ -63,6 +63,7 @@ define(function(require) {
         if (event.target.pathname === "/logout") {
           this.props.user.logout();
           this.props.router.navigate("/", {trigger: true});
+          
         } else {
           this.props.router.navigate(event.target.pathname, {trigger: true});
         }
