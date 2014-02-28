@@ -7,6 +7,8 @@ require.config({
     react: "vendor/react.0.9.0",
     JSXTransformer: "vendor/plugins/JSXTransformer.0.9.0",
 
+    validator: "vendor/validator.3.4.0",
+
     text: "vendor/plugins/require.text.2.0.10",
     jsx: "vendor/plugins/require.jsx.0.1.0"
   },
@@ -31,7 +33,7 @@ require(
   ],
   function (User, BaseView, React) {
     "use strict";
-
+    
     EAU.user = new User();
     React.renderComponent(BaseView(), document.getElementById("page"));
   }

@@ -11,6 +11,27 @@ define(function(require) {
    */
   var LayerAdd = React.createClass({
     
+    getInitialState: function() {
+      return {
+        currentState: "ok",
+        error: null
+      }
+    },
+
+    componentWillMount: function() {
+      this.props.fields.on("invalid", function(model, msg) {
+        // TODO highlight input that is invalid
+        this.setState({
+          currentState: "error",
+          error: new Error(msg)
+        });
+      }, this);
+    },
+
+    componentWillUnmount: function() {
+      this.props.fields.off(null, null, this);
+    },
+
     render: function() {
       return (
         <div>
@@ -20,10 +41,17 @@ define(function(require) {
             <label htmlFor="description">Beschreibung</label>
             <input type="text" name="description" ref="desc" /><br />
             <label htmlFor="value">Wert</label>
-            <input type="number" name="value" ref="val" /><br />
+            <input type="number" step="0.01" min="0" max="1000000" name="value" ref="val" /><br />
             <label htmlFor="ust">Umsatzsteuer %</label>
-            <input type="number" name="ust" ref="ust" /><br />
-            <input type="submit" />
+            <input type="number" min="0" max="19" name="ust" ref="ust" defaultValue="19" /><br />
+            { 
+              this.state.error !== null ?
+                <div className="error">{this.state.error.message}</div> : null
+            }
+            {
+              this.state.currentState === "sending" ?
+                <input type="submit" disabled /> : <input type="submit" />
+            }
           </form>
         </div>
       );
@@ -36,8 +64,11 @@ define(function(require) {
 
       event.preventDefault();
 
-      console.log("onSubmit()", desc, val, ust);
-      
+      this.setState({
+        currentState: "sending",
+        error: null
+      });
+
       this.props.fields.create({
         description: desc,
         value: val,
@@ -45,15 +76,34 @@ define(function(require) {
         date: new Date().toISOString().slice(0, 19).replace("T", " "),
         type: "in"
       }, {
-        token: this.props.user.get("token")
+        validate: true,
+        parse: true,
+        success: this.onSuccess,
+        error: this.onError
       });
-
-      // this.props.fields.save();
-
-      // this.refs.email.getDOMNode().value = "";
-      // this.refs.pwd.getDOMNode().value = "";
       
       return false;
+    },
+
+    onError: function(model, xhr) {
+      var response = JSON.parse(xhr.responseText);
+
+      this.setState({
+        currentState: "error",
+        error: new Error("Error: " + response.message)
+      });
+
+      // TODO handle wrongly added model in collection
+    },
+
+    onSuccess: function() {
+      var desc = this.refs.desc.getDOMNode().value = "";
+      var val = this.refs.val.getDOMNode().value = "";
+
+      this.setState({
+        currentState: "ok",
+        error: null
+      });
     }
 
   }); // end LayerAdd
