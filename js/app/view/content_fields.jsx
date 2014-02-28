@@ -42,8 +42,6 @@ define(function(require) {
     },
 
     render: function() {
-      var index = 0;
-
       if (this.state.fetching) {
         return <p>loading ...</p>;
       }
@@ -53,9 +51,9 @@ define(function(require) {
           <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a>
           <ul>
             {
-              this.state.fields.map(function(field) {
+              this.state.fields.map(function(field, index) {
                 return (
-                  <li key={index++}>{field.get("description") + ": " + field.get("value")}</li>
+                  <li key={index}>{field.get("description") + ": " + field.get("value")}</li>
                 );
               })
             }
