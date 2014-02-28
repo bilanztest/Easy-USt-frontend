@@ -17,11 +17,6 @@ define(function(require) {
 
     initialize: function(options) {
       this.url = "/api/fields?token=" + EAU.user.get("token");
-    },
-
-    onSync: function(model, response) {
-      console.log("onSync()", model, response);
-
     }
   }); // end Fields
 
