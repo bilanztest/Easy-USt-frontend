@@ -17,8 +17,8 @@ define(function(require) {
     render: function() {
       return (
         <nav>
-          <Menu user={this.props.user} />
-          <AccountNavigation user={this.props.user} />
+          <Menu />
+          <AccountNavigation />
         </nav>
       );
     }

@@ -4,6 +4,7 @@ define(function(require) {
 
   var React = require("react");
 
+  var Router = require("app/router");
   var mixins = require("app/utils/mixins");
 
   var Header = require("jsx!app/view/header");
@@ -21,37 +22,44 @@ define(function(require) {
     mixins: [mixins.RerenderOnLogin],
 
     getBackboneModels: function() {
-      return [this.props.user];
+      return [EAU.user];
     },
 
     getInitialState: function() {
       return {
-        home: {comp: ContentHome, loginNeeded: false},
-        show: {comp: ContentFields, loginNeeded: true},
-        login: {comp: ContentLogin, loginNeeded: false}
+        router: new Router(),
+        pages: {
+          home: {comp: ContentHome, loginNeeded: false},
+          show: {comp: ContentFields, loginNeeded: true},
+          login: {comp: ContentLogin, loginNeeded: false}
+        }
       };
     },
 
     componentWillMount: function() {
-      this.props.router.on("route", this.onPathChanged, this);
+      this.state.router.on("route", this.onPathChanged, this);
+    },
+
+    componentDidMount: function() {
+      Backbone.history.start({pushState: true});
     },
 
     render: function() {
-      var content = this.state[this.props.path];
+      var content = this.state.pages[this.props.path];
 
       if (typeof content === "undefined") {
         content = "Error, page not found";
       
-      } else if (content.loginNeeded && !this.props.user.isLoggedIn()) {
+      } else if (content.loginNeeded && !EAU.user.isLoggedIn()) {
         content = "Error, unauthorized";
       
       } else {
-        content = content.comp({user: this.props.user});
+        content = content.comp();
       }
 
       return (
         <div id="base" onClick={this.onClick}>
-          <Header user={this.props.user} />
+          <Header />
           {content}
         </div>
       );
@@ -65,19 +73,17 @@ define(function(require) {
         
         if (linkType === "main") {
           event.preventDefault();
-          this.props.router.navigate(event.target.pathname, {trigger: true});
+          this.state.router.navigate(event.target.pathname, {trigger: true});
         
         } else if (linkType === "action") {
           event.preventDefault();
 
           if (event.target.pathname === "/logout") {
-            this.props.user.logout();
-            this.props.router.navigate("/", {trigger: true});
+            EAU.user.logout();
+            this.state.router.navigate("/", {trigger: true});
             return;
           }
-        
         }
-
       }
     },
 

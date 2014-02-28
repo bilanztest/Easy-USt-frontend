@@ -27,22 +27,12 @@ require(
   [
     "app/model/user",
     "jsx!app/view/base",
-    "react",
-    "app/router",
-    "backbone"
+    "react"
   ],
-  function (User, BaseView, React, Router, Backbone) {
+  function (User, BaseView, React) {
     "use strict";
 
-    var user = new User();
-    var router = new Router();
-    var base = new BaseView({
-      router: router,
-      user: user
-    });
-
-    React.renderComponent(base, document.getElementById("page"));
-
-    Backbone.history.start({pushState: true});
+    EAU.user = new User();
+    React.renderComponent(BaseView(), document.getElementById("page"));
   }
 );

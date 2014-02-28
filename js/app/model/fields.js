@@ -4,6 +4,7 @@ define(function(require) {
 
   var Backbone = require("backbone");
 
+  var EAU = require("app/ns");
   var Field = require("app/model/field");
 
   /**
@@ -15,7 +16,7 @@ define(function(require) {
     model: Field,
 
     initialize: function(options) {
-      this.url = "/api/fields?token=" + options.get("token");
+      this.url = "/api/fields?token=" + EAU.user.get("token");
     },
 
     onSync: function(model, response) {

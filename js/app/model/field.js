@@ -3,6 +3,7 @@ define(function(require) {
   "use strict";
 
   var Backbone = require("backbone");
+  var EAU = require("app/ns");
 
   /**
    *
@@ -11,7 +12,7 @@ define(function(require) {
    */
   var Field = Backbone.Model.extend({
     initialize: function(attributes, options) {
-      this.url = "/api/field?token=" + options.token;
+      this.url = "/api/field?token=" + EAU.user.get("token");
     }
   }); // end Field
 

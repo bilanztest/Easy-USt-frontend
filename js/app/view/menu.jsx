@@ -3,6 +3,7 @@ define(function(require) {
   "use strict";
 
   var React = require("react");
+  var EAU = require("app/ns");
 
   /**
    *
@@ -21,22 +22,18 @@ define(function(require) {
     },
 
     render: function() {
-      var links,
-        index = 1,
-        self = this;
-
-      links = this.state.links.map(function(link) {
-        if (link.login && !self.props.user.isLoggedIn()) {
-          return;
-        }
-
-        return <li key={index++}><a href={link.href} data-link="main">{link.label}</a></li>;
-      });
-
       return (
         <ul className="eau-main-navigation">
           <li key="0"><h1><a href="/" data-link="main">Easy Ust</a></h1></li>
-          {links}
+          {
+            this.state.links.map(function(link, index) {
+              if (link.login && !EAU.user.isLoggedIn()) {
+                return;
+              }
+
+              return <li key={index}><a href={link.href} data-link="main">{link.label}</a></li>;
+            })
+          }
         </ul>
       );
     }

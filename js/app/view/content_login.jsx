@@ -3,6 +3,7 @@ define(function(require) {
   "use strict";
 
   var React = require("react");
+  var EAU = require("app/ns");
 
   /**
    *
@@ -12,25 +13,25 @@ define(function(require) {
   var ContentLogin = React.createClass({
     
     render: function() {
-      var content;
-
-      if (this.props.user.isLoggedIn()) {
-        content = <h2>Login success</h2>;
-
-      } else {
-        content = (
-          <form id="login" onSubmit={this.onSubmit}>
-            <h2>Login</h2>
-            <input type="text" name="email" ref="email" />
-            <input type="password" name="pwd" ref="pwd" />
-            <input type="submit" />
-          </form>
-        );
-      }
-
       return (
         <div id="content">
-          {content}
+          {
+            (function() {
+              if (EAU.user.isLoggedIn()) {
+                return <h2>Login success</h2>;
+
+              } else {
+                return (
+                  <form id="login" onSubmit={this.onSubmit}>
+                    <h2>Login</h2>
+                    <input type="text" name="email" ref="email" />
+                    <input type="password" name="pwd" ref="pwd" />
+                    <input type="submit" />
+                  </form>
+                );
+              }
+            })()
+          }
         </div>
       );
     },
@@ -45,10 +46,7 @@ define(function(require) {
         return false;
       }
 
-      this.props.user.login(email, pwd);
-
-      // this.refs.email.getDOMNode().value = "";
-      // this.refs.pwd.getDOMNode().value = "";
+      EAU.user.login(email, pwd);
       
       return false;
     }

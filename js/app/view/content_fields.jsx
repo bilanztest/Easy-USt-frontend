@@ -31,57 +31,58 @@ define(function(require) {
 
     componentWillUnmount: function() {
       this.state.fields.off(null, null, this);
+      this.closeOverlay();
     },
 
     getInitialState: function() {
       return {
-        fields: new Fields(this.props.user),
+        fields: new Fields(),
         fetching: true
       };
     },
 
     render: function() {
-      var fields,
-        index = 0;
+      var index = 0;
 
       if (this.state.fetching) {
         return <p>loading ...</p>;
       }
 
-      fields = this.state.fields.map(function(field) {
-        return (
-          <li key={index++}>{field.get("description") + ": " + field.get("value")}</li>
-        );
-      });
-
       return (
         <div id="content">
           <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a>
           <ul>
-            {fields}
+            {
+              this.state.fields.map(function(field) {
+                return (
+                  <li key={index++}>{field.get("description") + ": " + field.get("value")}</li>
+                );
+              })
+            }
           </ul>
         </div>
       );
     },
 
-    // TODO check fetching
+    closeOverlay: function() {
+      React.unmountComponentAtNode($("#modal")[0]);
+    },
+
+    // TODO check if still fetching
     onClickAddField: function(event) {
       var $modal = $("#modal"),
         comp = LayerAdd({
-          user: this.props.user,
           fields: this.state.fields,
-          onClose: this.onCloseOverlay
+          onClose: this.onClickClose
         });
 
       event.preventDefault();
       React.renderComponent(comp, $modal[0]);
     },
 
-    onCloseOverlay: function(event) {
-      var $modal = $("#modal");
-
+    onClickClose: function(event) {
       event.preventDefault();
-      React.unmountComponentAtNode($modal[0]);
+      this.closeOverlay();
     }
 
   }); // end ContentShow
