@@ -5,6 +5,7 @@ define(function(require) {
   var React = require("react");
   var Fields = require("app/model/fields");
   var LayerAdd = require("jsx!app/view/layer_add");
+  var formater = require("app/utils/formater");
 
   /**
    *
@@ -42,22 +43,54 @@ define(function(require) {
     },
 
     render: function() {
+      var ins = [],
+        outs = [];
+
       if (this.state.fetching) {
         return <p>loading ...</p>;
       }
 
+      this.state.fields.forEach(function(field) {
+        if (field.get("type") === "in") {
+          ins.push(field);
+        } else {
+          outs.push(field);
+        }
+      });
+
+      // XXX do we have to sort or could we rely on server response
+
       return (
         <div id="content">
           <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a>
-          <ul>
+          <h2>Einnahmen</h2>
+          <table cellSpacing="4">
             {
-              this.state.fields.map(function(field, index) {
+              ins.map(function(field, index) {
                 return (
-                  <li key={index}>{field.get("description") + ": " + field.get("value")}</li>
+                  <tr key={"ins" + index}>
+                    <td>{formater.date(field.get("date"), "dd.MM.")}</td>
+                    <td>{field.get("description")}</td>
+                    <td>{field.get("value") + "€"}</td>
+                  </tr>
                 );
               })
             }
-          </ul>
+          </table>
+          <h2>Ausgaben</h2>
+          <table cellSpacing="4">
+            {
+              outs.map(function(field, index) {
+                return (
+                  <tr key={"outs" + index}>
+                    <td>{formater.date(field.get("date"), "dd.MM.")}</td>
+                    <td>{field.get("description")}</td>
+                    <td>{field.get("value") + "€"}</td>
+                  </tr>
+                );
+              })
+            }
+          </table>
         </div>
       );
     },
