@@ -53,13 +53,27 @@ Apache:
   ProxyPass /api/ https://localhost:8080/api/
 
   <Directory /path/to/root/dir/>
-  # html5 pushstate (history) support:
+    # html5 pushstate (history) support:
     RewriteEngine On
     RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} !^/index\.html
     RewriteRule (.*) index.html
+
+    # gzip
+    <IfModule mod_deflate.c>
+      SetOutputFilter DEFLATE
+      
+      # Don’t compress
+      SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+      SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+      
+      # Dealing with proxy servers
+      <IfModule mod_headers.c>
+        Header append Vary User-Agent
+      </IfModule>
+    </IfModule>
   </Directory>
 </VirtualHost>
 ```
