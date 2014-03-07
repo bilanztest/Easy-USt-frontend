@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+}
+
+html {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  color: #292829;
+  
+  font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: $colorLightBlue;
+}
+
+small {
+  font-size: 90%;
+}
+
+h1 {
+  font-size: 42px;
+  line-height: 48px;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: bold;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}

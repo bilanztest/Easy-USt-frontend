@@ -14,7 +14,7 @@ define(function(require) {
     
     render: function() {
       return (
-        <div id="content">
+        <div className="eau-main-content">
           {
             (function() {
               if (EAU.user.isLoggedIn()) {

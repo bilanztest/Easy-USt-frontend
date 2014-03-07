@@ -13,7 +13,7 @@ define(function(require) {
 
     render: function() {
       return (
-        <div id="content">
+        <div className="eau-main-content">
           home
         </div>
       );

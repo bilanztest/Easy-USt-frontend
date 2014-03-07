@@ -16,7 +16,7 @@ define(function(require) {
 
     render: function() {
       return (
-        <nav>
+        <nav className="eau-main-navigation">
           <Menu />
           <AccountNavigation />
         </nav>

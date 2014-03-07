@@ -1,0 +1,38 @@
+.eau-main-navigation {
+  @extend .clearfix;
+
+  color: white;
+  background-color: $colorDarkBlue;
+
+  a:hover {
+    color: white;
+  }
+}
+
+.eau-main-menu {
+  float: left;
+  @extend .clearfix;
+
+  padding: 10px;
+  vertical-align: bottom;
+
+  h1 {
+    text-transform: uppercase;
+  }
+
+  li {
+    float: left;
+    margin-left: 10px;
+    font-weight: bold;
+
+    &:first-child {
+      margin-left: 0;      
+    }
+  }
+}
+
+.eau-acoount-nav {
+  float: right;
+  padding: 10px;
+  font-size: 80%;
+}

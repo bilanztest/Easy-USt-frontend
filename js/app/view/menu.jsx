@@ -23,7 +23,7 @@ define(function(require) {
 
     render: function() {
       return (
-        <ul className="eau-main-navigation">
+        <ul className="eau-main-menu">
           <li key="0"><h1><a href="/" data-link="main">Easy Ust</a></h1></li>
           {
             this.state.links.map(function(link, index) {

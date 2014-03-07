@@ -47,7 +47,11 @@ define(function(require) {
         outs = [];
 
       if (this.state.fetching) {
-        return <p>loading ...</p>;
+        return (
+          <div className="eau-main-content">
+            <p>loading ...</p>
+          </div>
+        );
       }
 
       this.state.fields.forEach(function(field) {
@@ -61,36 +65,42 @@ define(function(require) {
       // XXX do we have to sort or could we rely on server response
 
       return (
-        <div id="content">
+        <div className="eau-main-content">
           <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a>
-          <h2>Einnahmen</h2>
-          <table cellSpacing="4">
-            {
-              ins.map(function(field, index) {
-                return (
-                  <tr key={"ins" + index}>
-                    <td>{formater.date(field.get("date"), "dd.MM.")}</td>
-                    <td>{field.get("description")}</td>
-                    <td>{field.get("value") + "€"}</td>
-                  </tr>
-                );
-              })
-            }
-          </table>
-          <h2>Ausgaben</h2>
-          <table cellSpacing="4">
-            {
-              outs.map(function(field, index) {
-                return (
-                  <tr key={"outs" + index}>
-                    <td>{formater.date(field.get("date"), "dd.MM.")}</td>
-                    <td>{field.get("description")}</td>
-                    <td>{field.get("value") + "€"}</td>
-                  </tr>
-                );
-              })
-            }
-          </table>
+          <div className="eau-fields-tables">
+            <div className="eau-fields-table-container">
+              <h2>Einnahmen</h2>
+              <table className="eau-fields-table">
+                {
+                  ins.map(function(field, index) {
+                    return (
+                      <tr key={"ins" + index}>
+                        <td>{formater.date(field.get("date"), "dd.MM.")}</td>
+                        <td>{field.get("description")}</td>
+                        <td>{field.get("value") + "€"}</td>
+                      </tr>
+                    );
+                  })
+                }
+              </table>
+            </div>
+            <div className="eau-table-container">
+              <h2>Ausgaben</h2>
+              <table className="eau-fields-table">
+                {
+                  outs.map(function(field, index) {
+                    return (
+                      <tr key={"outs" + index}>
+                        <td>{formater.date(field.get("date"), "dd.MM.")}</td>
+                        <td>{field.get("description")}</td>
+                        <td>{field.get("value") + "€"}</td>
+                      </tr>
+                    );
+                  })
+                }
+              </table>
+            </div>
+          </div>
         </div>
       );
     },
