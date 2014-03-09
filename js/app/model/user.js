@@ -11,10 +11,10 @@ define(function(require) {
    *
    */
   var User = Backbone.Model.extend({
+    url: "/api/user",
+
     initialize: function() {
       var data;
-
-      this.on("sync", this.onSync, this);
 
       // read user info from localStorage
       if (EAU.features.localStorage) {
@@ -71,11 +71,6 @@ define(function(require) {
         localStorage.removeItem("user");
       }
       this.clear();
-    },
-
-    onSync: function(model, response) {
-      console.log("onSync()", model, response);
-
     }
   }); // end User
 
