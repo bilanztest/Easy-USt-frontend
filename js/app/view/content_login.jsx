@@ -13,6 +13,8 @@ define(function(require) {
   var ContentLogin = React.createClass({
     
     render: function() {
+      var self = this;
+
       return (
         <div className="eau-main-content">
           {
@@ -22,10 +24,12 @@ define(function(require) {
 
               } else {
                 return (
-                  <form id="login" onSubmit={this.onSubmit}>
-                    <h2>Login</h2>
-                    <input type="text" name="email" ref="email" />
-                    <input type="password" name="pwd" ref="pwd" />
+                  <form id="login" onSubmit={self.onSubmit}>
+                    <h2>Anmelden</h2>
+                    <label htmlFor="email">E-Mail</label>
+                    <input type="email" name="email" ref="email" /><br />
+                    <label htmlFor="pwd">Passwort</label>
+                    <input type="password" name="pwd" ref="pwd" /><br />
                     <input type="submit" />
                   </form>
                 );
@@ -36,11 +40,12 @@ define(function(require) {
       );
     },
 
-    onSubmit: function() {
+    onSubmit: function(event) {
       var email = this.refs.email.getDOMNode().value.trim();
       var pwd = this.refs.pwd.getDOMNode().value;
 
       console.log("onSubmit()", email, pwd);
+      event.preventDefault();
 
       if (!email || !pwd) {
         return false;
