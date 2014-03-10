@@ -23,6 +23,9 @@ define(function(require) {
         if (data) {
           data = JSON.parse(data);
         }
+        
+        // sync changes to localStorage
+        this.on("sync", this.onSync, this);
       }
 
       console.log("User data", data);
@@ -70,6 +73,15 @@ define(function(require) {
         localStorage.removeItem("user");
       }
       this.clear();
+    },
+
+    onSync: function() {
+      // don't save pwd to localStorage
+      this.unset("pwd", {silent: true});
+
+      if (this.isLoggedIn()) {
+        localStorage.setItem("user", JSON.stringify(this.toJSON()));
+      }
     }
   }); // end User
 
