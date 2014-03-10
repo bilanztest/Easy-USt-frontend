@@ -34,7 +34,7 @@ define(function(require) {
     },
 
     isLoggedIn: function() {
-      return !!this.id;
+      return !!this.get("token");
     },
 
     login: function(email, pwd) {
@@ -63,7 +63,6 @@ define(function(require) {
       }).fail(function() {
         console.log("FAIL", arguments);
       });
-      
     },
 
     logout: function() {

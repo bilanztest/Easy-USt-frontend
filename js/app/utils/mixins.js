@@ -33,7 +33,7 @@ define(function(require) {
     componentDidMount: function() {
       // Whenever there may be a change in the Backbone data, trigger a reconcile.
       this.getBackboneModels().forEach(function(model) {
-        model.on("change:id", this.forceUpdate.bind(this, null), this);
+        model.on("change:token", this.forceUpdate.bind(this, null), this);
       }, this);
     },
 
