@@ -4,6 +4,8 @@ define(function(require) {
 
   var React = require("react");
 
+  var EAU = require("app/ns");
+
   var Router = require("app/router");
   var mixins = require("app/utils/mixins");
 
@@ -38,6 +40,7 @@ define(function(require) {
 
     componentWillMount: function() {
       this.state.router.on("route", this.onPathChanged, this);
+      EAU.vent.on("goto", this.onGoto, this);
     },
 
     componentDidMount: function() {
@@ -73,18 +76,22 @@ define(function(require) {
         
         if (linkType === "main") {
           event.preventDefault();
-          this.state.router.navigate(event.target.pathname, {trigger: true});
+          EAU.vent.trigger("goto", event.target.pathname);
         
         } else if (linkType === "action") {
           event.preventDefault();
 
           if (event.target.pathname === "/logout") {
             EAU.user.logout();
-            this.state.router.navigate("/", {trigger: true});
+            EAU.vent.trigger("goto", "/");
             return;
           }
         }
       }
+    },
+
+    onGoto: function(path) {
+      this.state.router.navigate(path, {trigger: true});
     },
 
     onPathChanged: function(action) {
