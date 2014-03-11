@@ -14,6 +14,7 @@ define(function(require) {
   var ContentHome = require("jsx!app/view/content_home");
   var ContentFields = require("jsx!app/view/content_fields");
   var ContentLogin = require("jsx!app/view/content_login");
+  var ContentRegister = require("jsx!app/view/content_register");
 
   /**
    *
@@ -33,7 +34,8 @@ define(function(require) {
         pages: {
           home: {comp: ContentHome, loginNeeded: false},
           show: {comp: ContentFields, loginNeeded: true},
-          login: {comp: ContentLogin, loginNeeded: false}
+          login: {comp: ContentLogin, loginNeeded: false},
+          register: {comp: ContentRegister, loginNeeded: false}
         }
       };
     },
