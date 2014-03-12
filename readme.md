@@ -18,9 +18,14 @@ and then add `easyust.dev` behind `127.0.0.1` like this
 127.0.0.1        localhost easyust.dev
 ```
 
-### html5 pushstate (history) support
+### setup webserver
 
-Apache:
+- add custom SSL certificate
+- proxy /api path to node running on port 8080
+- support html5 pushstate (history)
+- add gzip
+
+####Apache:
 
 ```
 <VirtualHost *:443>
@@ -78,4 +83,8 @@ Apache:
 </VirtualHost>
 ```
 
-NGINX:
+####NGINX:
+
+```
+# coming soon
+```
