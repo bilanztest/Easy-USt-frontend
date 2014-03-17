@@ -12,11 +12,11 @@ define(function(require) {
    *
    */
   var Field = Backbone.Model.extend({
-    initialize: function(attributes, options) {
+    initialize: function() {
       this.url = "/api/field?token=" + EAU.user.get("token");
     },
 
-    parse: function(response, options) {
+    parse: function(response) {
       if (typeof response.value !== "undefined") {
         response.value = parseFloat(response.value);
       }
@@ -32,7 +32,7 @@ define(function(require) {
       return response;
     },
 
-    validate: function(attributes, options) {
+    validate: function(attributes) {
       if (!validator.isLength(attributes.description, 0, 100)) {
         return "description too long";
       }

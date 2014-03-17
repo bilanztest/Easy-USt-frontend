@@ -27,16 +27,15 @@ define(function(require) {
     }
 
     for (var k in o) {
-      if (new RegExp("("+ k +")").test(format)) {
+      if (new RegExp("(" + k + ")").test(format)) {
         format = format.replace(RegExp.$1,
           RegExp.$1.length === 1 ?
             o[k] :
-            ("00"+ o[k]).substr((""+ o[k]).length));
+            ("00" + o[k]).substr(("" + o[k]).length));
       }
     }
     return format;
   };
-    
 
   return {
     "date": date

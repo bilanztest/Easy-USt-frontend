@@ -15,7 +15,7 @@ define(function(require) {
   var Fields = Backbone.Collection.extend({
     model: Field,
 
-    initialize: function(options) {
+    initialize: function() {
       this.url = "/api/fields?token=" + EAU.user.get("token");
     }
   }); // end Fields

@@ -21,8 +21,8 @@ define(function(require) {
         localStorage.setItem(mod, mod);
         localStorage.removeItem(mod);
         return true;
-      }
-      catch (e) {
+      
+      } catch (e) {
         return false;
       }
     };
