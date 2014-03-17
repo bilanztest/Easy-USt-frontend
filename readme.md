@@ -1,4 +1,4 @@
-# Easy Ust Frontend
+# Easy USt Frontend
 
 ## Setup of local single-page-app
 
