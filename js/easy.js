@@ -27,12 +27,13 @@ require.config({
 
 require(
   [
+    "app/ns",
     "app/model/user",
     "jsx!app/view/base",
     "react",
     "app/utils/polyfills"
   ],
-  function (User, BaseView, React, polyfills) {
+  function (EAU, User, BaseView, React, polyfills) {
     "use strict";
     
     EAU.user = new User();
