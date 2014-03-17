@@ -1,0 +1,55 @@
+{
+  "env": {
+    "browser": true,
+    "amd": true
+  },
+
+  "globals": {
+    "console": true
+  },
+
+  "rules": {
+    "no-console": 0,
+    "no-comma-dangle": 1,
+    "no-new-wrappers": 1,
+    "no-return-assign": 1,
+
+    "curly": [2, "all"],
+    "dot-notation": 1,
+    "eqeqeq": 1,
+    "no-else-return": 1,
+    "no-extend-native": 0,
+    "no-floating-decimal": 1,
+    "no-redeclare": 1,
+    "no-script-url": 1,
+    "no-self-compare": 1,
+    "radix": 1,
+
+    "no-constant-condition": 0,
+
+    "strict": 1,
+
+    "no-shadow": 1,
+    "no-shadow-restricted-names": 1,
+    "no-undef": 1,
+    "no-unused-vars": 1,
+    "no-use-before-define": 1,
+
+    "brace-style": ["2", "1tbs"],
+    "quotes": [2, "double"],
+    "camelcase": 1,
+    "consistent-this": [0, "self"],
+    "new-cap": 1,
+    "no-nested-ternary": 1,
+    "no-array-constructor": 1,
+    "no-new-object": 1,
+    "no-spaced-func": 1,
+    "semi": [2, "always"],
+    "space-infix-ops": 1,
+    "space-in-brackets": [2, "never"],
+    "max-nested-callbacks": [2, 2],
+    
+    // otherwise we get warnings for our var xxx = require() stuff everywhere
+    "one-var": 0
+  }
+}
