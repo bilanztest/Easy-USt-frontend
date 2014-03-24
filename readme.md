@@ -1,5 +1,7 @@
 # Easy USt Frontend
 
+[![Code Climate](https://codeclimate.com/github/bilanztest/Easy-USt-frontend.png)](https://codeclimate.com/github/bilanztest/Easy-USt-frontend)
+
 ## Setup of local single-page-app
 
 ### add custom domain to `hosts`
