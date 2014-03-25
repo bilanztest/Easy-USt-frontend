@@ -47,7 +47,7 @@ and then add `easyust.dev` behind `127.0.0.1` like this
   SSLProxyEngine On
   SSLProxyVerify None
 
-  DocumentRoot "/path/to/root/dir"
+  DocumentRoot "/path/to/root/dir/src"
   ServerName easyust.dev
 
   # INSERT YOUR PATH
@@ -59,7 +59,7 @@ and then add `easyust.dev` behind `127.0.0.1` like this
   # map remote host
   ProxyPass /api/ https://localhost:8080/api/
 
-  <Directory /path/to/root/dir/>
+  <Directory /path/to/root/dir/src/>
     # html5 pushstate (history) support:
     RewriteEngine On
     RewriteBase /
