@@ -30,7 +30,7 @@ define(function(require) {
       }
 
       console.log("User data", data);
-      if (typeof data === "undefined" || data === null) {
+      if (typeof data === "undefined" || data === null) {
         data = {};
       }
 
