@@ -10,7 +10,16 @@
     "url": "https://pkyeck@github.com/bilanztest/Easy-USt-frontend.git"
   },
   "devDependencies": {
-    "eslint": "~0.4.2"
+    "eslint": "~0.4.2",
+    "requirejs": "~2.1.11",
+    "gulp": "~3.5.6",
+    "gulp-clean": "~0.2.4",
+    "gulp-replace": "~0.2.0",
+    "gulp-eslint": "~0.1.5",
+    "gulp-minify-html": "~0.1.1",
+    "gulp-react": "~0.3.0",
+    "gulp-ruby-sass": "~0.4.0",
+    "run-sequence": "~0.3.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
