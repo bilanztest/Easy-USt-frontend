@@ -15,7 +15,7 @@ define(function(require) {
       return {
         currentState: "ok",
         error: null
-      }
+      };
     },
 
     componentWillMount: function() {
@@ -38,6 +38,12 @@ define(function(require) {
           <a href="/close" onClick={this.props.onClose}>&times; schließen</a>
           <h2>Feld hinzufügen</h2>
           <form id="add" onSubmit={this.onSubmit}>
+            <label>
+              <input type="radio" name="type" ref="typeIn" value="in" defaultChecked /> Einnahme
+            </label><br />
+            <label>
+              <input type="radio" name="type" value="out" /> Ausgabe
+            </label><br />
             <label htmlFor="description">Beschreibung</label>
             <input type="text" name="description" ref="desc" /><br />
             <label htmlFor="value">Wert</label>
@@ -58,6 +64,7 @@ define(function(require) {
     },
 
     onSubmit: function(event) {
+      var typeIn = this.refs.typeIn.getDOMNode();
       var desc = this.refs.desc.getDOMNode().value.trim();
       var val = this.refs.val.getDOMNode().value;
       var ust = this.refs.ust.getDOMNode().value;
@@ -74,7 +81,7 @@ define(function(require) {
         value: val,
         ust: ust,
         date: new Date().toISOString().slice(0, 19).replace("T", " "),
-        type: "in"
+        type: typeIn.checked ? "in" : "out"
       }, {
         validate: true,
         parse: true,
