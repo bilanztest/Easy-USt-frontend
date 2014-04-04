@@ -33,8 +33,8 @@ define(function(require) {
     },
 
     validate: function(attributes) {
-      if (!validator.isLength(attributes.description, 0, 100)) {
-        return "description too long";
+      if (!validator.isLength(attributes.description, 1, 100)) {
+        return "description required but can't be longer than 100 characters";
       }
 
       if (!validator.isFloat(attributes.value)) {
