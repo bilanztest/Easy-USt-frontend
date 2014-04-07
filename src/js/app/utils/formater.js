@@ -37,7 +37,16 @@ define(function(require) {
     return format;
   };
 
+  var round = function(value, decimal) {
+    var offset = value >= 0 ? 0.5 : -0.5;
+
+    decimal = decimal || 100;
+    // http://jsperf.com/math-floor-vs-math-round-vs-parseint/18
+    return ~~(value*decimal + offset) / decimal;
+  };
+
   return {
-    "date": date
+    "date": date,
+    "round": round
   };
 });

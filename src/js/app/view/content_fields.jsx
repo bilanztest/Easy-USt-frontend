@@ -78,6 +78,8 @@ define(function(require) {
                         <td>{formater.date(field.get("date"), "dd.MM.")}</td>
                         <td>{field.get("description")}</td>
                         <td>{field.get("value") + "€"}</td>
+                        <td>{field.get("ust") + "%"}</td>
+                        <td>{formater.round(field.get("value") * (field.get("ust")/100), 100) + "€"}</td>
                       </tr>
                     );
                   })
