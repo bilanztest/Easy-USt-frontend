@@ -4,7 +4,6 @@ define(function(require) {
 
   var Backbone = require("backbone");
   var validator = require("validator");
-  var EAU = require("app/ns");
 
   /**
    *

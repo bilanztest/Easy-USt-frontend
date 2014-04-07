@@ -42,7 +42,7 @@ define(function(require) {
 
     decimal = decimal || 100;
     // http://jsperf.com/math-floor-vs-math-round-vs-parseint/18
-    return ~~(value*decimal + offset) / decimal;
+    return ~~(value * decimal + offset) / decimal;
   };
 
   return {

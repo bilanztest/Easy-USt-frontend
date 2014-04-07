@@ -3,8 +3,6 @@ define(function(require) {
   "use strict";
 
   var Backbone = require("backbone");
-
-  var EAU = require("app/ns");
   var Field = require("app/model/field");
 
   /**
