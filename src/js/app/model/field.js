@@ -12,10 +12,6 @@ define(function(require) {
    *
    */
   var Field = Backbone.Model.extend({
-    initialize: function() {
-      this.url = "/api/field?token=" + EAU.user.get("token");
-    },
-
     parse: function(response) {
       if (typeof response.value !== "undefined") {
         response.value = parseFloat(response.value);

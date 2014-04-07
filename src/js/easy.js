@@ -37,6 +37,19 @@ require(
     "use strict";
     
     EAU.user = new User();
+
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings){
+        if(EAU.user.get("token")) {
+          if(settings.url.indexOf("?") !== -1){
+            settings.url += "&token=" + EAU.user.get("token");
+          } else {
+            settings.url += "?token=" + EAU.user.get("token");
+          }
+        }
+      }
+    });
+
     React.renderComponent(BaseView(), document.getElementById("page"));
   }
 );

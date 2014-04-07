@@ -16,7 +16,7 @@ define(function(require) {
     model: Field,
 
     initialize: function() {
-      this.url = "/api/fields?token=" + EAU.user.get("token");
+      this.url = "/api/fields";
     }
   }); // end Fields
 
