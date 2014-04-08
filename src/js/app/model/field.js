@@ -11,7 +11,9 @@ define(function(require) {
    *
    */
   var Field = Backbone.Model.extend({
-    url: "/api/field",
+    url: function() {
+      return "/api/field/" + this.id;
+    },
     
     parse: function(response) {
       if (typeof response.value !== "undefined") {
