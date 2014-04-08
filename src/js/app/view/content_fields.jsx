@@ -7,6 +7,8 @@ define(function(require) {
   var LayerAdd = require("jsx!app/view/layer_add");
   var formater = require("app/utils/formater");
 
+  var FieldView = require("jsx!app/view/field_view");
+
   /**
    *
    *
@@ -71,37 +73,25 @@ define(function(require) {
             <div className="eau-fields-table-container">
               <h2>Einnahmen</h2>
               <table className="eau-fields-table">
-                {
-                  ins.map(function(field, index) {
-                    return (
-                      <tr key={"ins" + index}>
-                        <td>{formater.date(field.get("date"), "dd.MM.")}</td>
-                        <td>{field.get("description")}</td>
-                        <td>{field.get("value") + "€"}</td>
-                        <td>{field.get("ust") + "%"}</td>
-                        <td>{formater.round(field.get("value") * (field.get("ust")/100), 100) + "€"}</td>
-                      </tr>
-                    );
-                  })
-                }
+                <tbody>
+                  {
+                    ins.map(function(field, index) {
+                      return <FieldView type="in" field={field} index={index}/>
+                    })
+                  }
+                </tbody>
               </table>
             </div>
             <div className="eau-table-container">
               <h2>Ausgaben</h2>
               <table className="eau-fields-table">
-                {
-                  outs.map(function(field, index) {
-                    return (
-                      <tr key={"outs" + index}>
-                        <td>{formater.date(field.get("date"), "dd.MM.")}</td>
-                        <td>{field.get("description")}</td>
-                        <td>{field.get("value") + "€"}</td>
-                        <td>{field.get("ust") + "%"}</td>
-                        <td>{formater.round(field.get("value") * (field.get("ust")/100), 100) + "€"}</td>
-                      </tr>
-                    );
-                  })
-                }
+                <tbody>
+                  {
+                    outs.map(function(field, index) {
+                      return <FieldView type="out" field={field} index={index}/>
+                    })
+                  }
+                </tbody>
               </table>
             </div>
           </div>
