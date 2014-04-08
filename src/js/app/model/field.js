@@ -11,6 +11,8 @@ define(function(require) {
    *
    */
   var Field = Backbone.Model.extend({
+    url: "/api/field",
+    
     parse: function(response) {
       if (typeof response.value !== "undefined") {
         response.value = parseFloat(response.value);
