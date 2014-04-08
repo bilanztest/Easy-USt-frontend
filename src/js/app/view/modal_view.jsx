@@ -1,0 +1,63 @@
+define(function(require) {
+
+  "use strict";
+
+  var React = require("react");
+
+  var EAU = require("app/ns");
+
+  /**
+   *
+   *
+   *
+   */
+  var ModalView = React.createClass({
+
+    getInitialState: function() {
+      return {
+        contentView: null
+      };
+    },
+
+    componentDidMount: function() {
+      EAU.vent.on("openModal", this.openModal, this);
+      EAU.vent.on("closeModal", this.closeModal, this);
+    },
+
+    render: function() {
+      return (
+        <div className="easy-modal-table" onClick={this.onCloseClick}>
+          <div className="easy-modal-content">
+            {this.state.contentView}
+          </div>
+        </div>
+      );
+    },
+
+    openModal: function(contentView) {
+      this.state.contentView = contentView;
+
+      $("#modal").css("display", "block");
+
+      this.forceUpdate();
+    },
+
+    closeModal: function() {
+      this.state.contentView = null;
+
+      $("#modal").css("display", "none");
+
+      this.forceUpdate();
+    },
+
+    onCloseClick: function(event) {
+      // only fire when background (and not the content) was clicked
+      if(event.target.className === "easy-modal-content") {
+        EAU.vent.trigger("closeModal");
+      }
+    }
+
+  }); // end ModalView
+
+  return ModalView;
+});

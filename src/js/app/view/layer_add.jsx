@@ -34,8 +34,8 @@ define(function(require) {
 
     render: function() {
       return (
-        <div>
-          <a href="/close" onClick={this.props.onClose}>&times; schließen</a>
+        <div className="easy-modal--add-field">
+          <a href="/close" onClick={this.onCloseClick}>&times; schließen</a>
           <h2>Feld hinzufügen</h2>
           <form id="add" onSubmit={this.onSubmit}>
             <label>
@@ -90,6 +90,12 @@ define(function(require) {
       });
       
       return false;
+    },
+
+    onCloseClick: function(event) {
+      event.preventDefault();
+
+      EAU.vent.trigger("closeModal");
     },
 
     onError: function(model, xhr) {

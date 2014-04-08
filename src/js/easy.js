@@ -30,13 +30,15 @@ require(
     "app/ns",
     "app/model/user",
     "jsx!app/view/base",
+    "jsx!app/view/modal_view",
     "react",
     "app/utils/polyfills"
   ],
-  function (EAU, User, BaseView, React, polyfills) {
+  function (EAU, User, BaseView, ModalView, React, polyfills) {
     "use strict";
 
     EAU.user = new User();
     React.renderComponent(BaseView(), document.getElementById("page"));
+    React.renderComponent(ModalView(), document.getElementById("modal"));
   }
 );
