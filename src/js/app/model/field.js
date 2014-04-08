@@ -12,7 +12,11 @@ define(function(require) {
    */
   var Field = Backbone.Model.extend({
     url: function() {
-      return "/api/field/" + this.id;
+      var url = "/api/field/";
+      if(this.id) {
+        url += this.id;
+      }
+      return url;
     },
     
     parse: function(response) {
