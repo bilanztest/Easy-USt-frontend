@@ -34,7 +34,7 @@ define(function(require) {
 
     render: function() {
       return (
-        <div className="easy-modal--add-field">
+        <div className="easy-modal-add-field">
           <a href="/close" onClick={this.onCloseClick}>&times; schließen</a>
           <h2>Feld hinzufügen</h2>
           <form id="add" onSubmit={this.onSubmit}>
