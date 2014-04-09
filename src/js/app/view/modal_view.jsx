@@ -20,8 +20,8 @@ define(function(require) {
     },
 
     componentDidMount: function() {
-      EAU.vent.on("openModal", this.openModal, this);
-      EAU.vent.on("closeModal", this.closeModal, this);
+      EAU.vent.on("modal:open", this.openModal, this);
+      EAU.vent.on("modal:close", this.closeModal, this);
     },
 
     render: function() {
@@ -53,7 +53,7 @@ define(function(require) {
     onCloseClick: function(event) {
       // only fire when background (and not the content) was clicked
       if(event.target.className === "easy-modal-content") {
-        EAU.vent.trigger("closeModal");
+        EAU.vent.trigger("modal:close");
       }
     }
 

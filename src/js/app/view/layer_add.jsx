@@ -95,7 +95,7 @@ define(function(require) {
     onCloseClick: function(event) {
       event.preventDefault();
 
-      EAU.vent.trigger("closeModal");
+      EAU.vent.trigger("modal:close");
     },
 
     onError: function(model, xhr) {

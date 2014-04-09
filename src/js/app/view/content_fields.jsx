@@ -107,7 +107,7 @@ define(function(require) {
         fields: this.state.fields
       });
 
-      EAU.vent.trigger("openModal", comp);
+      EAU.vent.trigger("modal:open", comp);
     }
 
   }); // end ContentShow
