@@ -36,17 +36,13 @@ define(function(require) {
 
     openModal: function(contentView) {
       this.state.contentView = contentView;
-
-      $("#modal").css("display", "block");
-
+      $("#modal").show();
       this.forceUpdate();
     },
 
     closeModal: function() {
       this.state.contentView = null;
-
-      $("#modal").css("display", "none");
-
+      $("#modal").hide();
       this.forceUpdate();
     },
 
