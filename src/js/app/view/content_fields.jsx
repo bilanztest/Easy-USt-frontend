@@ -99,25 +99,15 @@ define(function(require) {
       );
     },
 
-    closeOverlay: function() {
-      React.unmountComponentAtNode($("#modal")[0]);
-    },
-
     // TODO check if still fetching
     onClickAddField: function(event) {
-      var $modal = $("#modal"),
-        comp = LayerAdd({
-          fields: this.state.fields,
-          onClose: this.onClickClose
-        });
-
       event.preventDefault();
-      React.renderComponent(comp, $modal[0]);
-    },
 
-    onClickClose: function(event) {
-      event.preventDefault();
-      this.closeOverlay();
+      var comp = LayerAdd({
+        fields: this.state.fields
+      });
+
+      EAU.vent.trigger("modal:open", comp);
     }
 
   }); // end ContentShow

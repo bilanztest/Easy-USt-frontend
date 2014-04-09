@@ -1,0 +1,26 @@
+.easy-modal {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(128, 128, 128, 0.5);
+}
+
+.easy-modal-table {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.easy-modal-content {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.easy-modal-add-field {
+  width: 400px;
+  margin: 0 auto;
+  background: white;
+}
