@@ -20,15 +20,19 @@ define(function(require) {
     },
     
     parse: function(response) {
-      if (response && typeof response.value !== "undefined") {
+      if (!response) {
+        return;
+      }
+
+      if (typeof response.value !== "undefined") {
         response.value = parseFloat(response.value);
       }
 
-      if (response && typeof response.ust !== "undefined") {
+      if (typeof response.ust !== "undefined") {
         response.ust = parseInt(response.ust, 10);
       }
       
-      if (response && typeof response.date !== "undefined") {
+      if (typeof response.date !== "undefined") {
         response.date = new Date(response.date);
       }
 
