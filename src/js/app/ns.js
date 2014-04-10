@@ -18,7 +18,7 @@ define(function(require) {
 
   // override BB's sync
   Backbone.sync = function(method, model, options) {
-    options.beforeSend = function (xhr, settings) {
+    options.beforeSend = function(xhr, settings) {
       var q = query.parse(settings.url),
         token = window.EAU.user.get("token");
 

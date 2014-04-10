@@ -18,10 +18,10 @@ define(function(require) {
       }
 
       var aArgs = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
+        self = this,
         FNOP = function() {},
         FBound = function() {
-          return fToBind.apply(this instanceof FNOP && oThis ? this : oThis,
+          return self.apply(this instanceof FNOP && oThis ? this : oThis,
             aArgs.concat(Array.prototype.slice.call(arguments)));
         };
 
