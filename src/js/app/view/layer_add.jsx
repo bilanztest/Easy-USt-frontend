@@ -21,6 +21,7 @@ define(function(require) {
 
     componentWillMount: function() {
       var modelOrCollection = this.props.fields || this.props.field;
+
       modelOrCollection.on("invalid", function(model, errorObj) {
         // TODO highlight input that is invalid
         this.setState({
@@ -33,20 +34,21 @@ define(function(require) {
 
     componentWillUnmount: function() {
       var modelOrCollection = this.props.fields || this.props.field;
+
       modelOrCollection.off(null, null, this);
     },
 
     render: function() {
-      var field = this.props.field;
-      var inChecked = field && field.get("type") === "in" || "";
-      var outChecked = field && field.get("type") === "out" || "";
-      var desc = field && field.get("description") || null;
-      var value = field && field.get("value") || null;
-      var ust = field && field.get("ust") || "19";
-      var isSending = this.state.currentState === "sending";
-      var descErrorClass = this.state.errorField === "desc" && "input-error" || null;
-      var valErrorClass = this.state.errorField === "val" && "input-error" || null;
-      var ustErrorClass = this.state.errorField === "ust" && "input-error" || null;
+      var field = this.props.field,
+        inChecked = field && field.get("type") === "in" || "",
+        outChecked = field && field.get("type") === "out" || "",
+        desc = field && field.get("description") || null,
+        value = field && field.get("value") || null,
+        ust = field && field.get("ust") || "19",
+        isSending = this.state.currentState === "sending",
+        descErrorClass = this.state.errorField === "desc" && "input-error" || null,
+        valErrorClass = this.state.errorField === "val" && "input-error" || null,
+        ustErrorClass = this.state.errorField === "ust" && "input-error" || null;
 
       return (
         <div className="easy-modal-add-field">
@@ -76,23 +78,23 @@ define(function(require) {
     },
 
     onSubmit: function(event) {
-      var typeIn = this.refs.typeIn.getDOMNode();
-      var desc = this.refs.desc.getDOMNode().value.trim();
-      var val = this.refs.val.getDOMNode().value;
-      var ust = this.refs.ust.getDOMNode().value;
-      var data = {
-        description: desc,
-        value: val,
-        ust: ust,
-        date: new Date(),
-        type: typeIn.checked ? "in" : "out"
-      }
-      var options = {
-        validate: true,
-        parse: true,
-        success: this.onSuccess,
-        error: this.onError
-      }
+      var typeIn = this.refs.typeIn.getDOMNode(),
+        desc = this.refs.desc.getDOMNode().value.trim(),
+        val = this.refs.val.getDOMNode().value,
+        ust = this.refs.ust.getDOMNode().value,
+        data = {
+          description: desc,
+          value: val,
+          ust: ust,
+          date: new Date(),
+          type: typeIn.checked ? "in" : "out"
+        },
+        options = {
+          validate: true,
+          parse: true,
+          success: this.onSuccess,
+          error: this.onError
+        };
 
       event.preventDefault();
 
@@ -135,15 +137,15 @@ define(function(require) {
     },
 
     onSuccess: function() {
-      var desc = this.refs.desc.getDOMNode().value = "";
-      var val = this.refs.val.getDOMNode().value = "";
+      var desc = this.refs.desc.getDOMNode().value = "",
+        val = this.refs.val.getDOMNode().value = "";
 
       this.setState({
         currentState: "ok",
         error: null
       });
 
-      if(this.props.field) {
+      if (this.props.field) {
         EAU.vent.trigger("closeModal");
       }
     }

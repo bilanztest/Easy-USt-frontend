@@ -45,19 +45,19 @@ define(function(require) {
       }
 
       if (!validator.isFloat(attributes.value)) {
-        return {fieldRef:"val", msg: "value has to be a number"};
+        return {fieldRef: "val", msg: "value has to be a number"};
       }
 
       if (attributes.value <= 0 || attributes.value > 1000000) {
-        return {fieldRef:"val", msg: "value has to be between 0 and 1000000"};
+        return {fieldRef: "val", msg: "value has to be between 0 and 1000000"};
       }
       
       if (!validator.isIn(attributes.ust, [0, 7, 19])) {
-        return {fieldRef:"ust", msg: "ust has to be either 0, 7 or 19"};
+        return {fieldRef: "ust", msg: "ust has to be either 0, 7 or 19"};
       }
 
       if (!validator.isIn(attributes.type, ["in", "out"])) {
-        return {fieldRef:"type", msg: "type has to be either 'in' or 'out'"};
+        return {fieldRef: "type", msg: "type has to be either 'in' or 'out'"};
       }
     }
 

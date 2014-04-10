@@ -30,13 +30,13 @@ define(function(require) {
     },
 
     onEditItem: function(event) {
-      event.preventDefault();
-
       var comp = LayerAdd({
         field: this.props.field
       });
 
-      EAU.vent.trigger("openModal", comp);
+      event.preventDefault();
+
+      EAU.vent.trigger("modal:open", comp);
     },
 
     onRemoveItem: function(event) {
