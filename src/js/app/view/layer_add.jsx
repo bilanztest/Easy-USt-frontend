@@ -146,7 +146,7 @@ define(function(require) {
       });
 
       if (this.props.field) {
-        EAU.vent.trigger("closeModal");
+        EAU.vent.trigger("modal:close");
       }
     }
 
