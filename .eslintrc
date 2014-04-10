@@ -50,6 +50,9 @@
     "max-nested-callbacks": [2, 2],
     
     // otherwise we get warnings for our var xxx = require() stuff everywhere
-    "one-var": 0
+    "one-var": 0,
+
+    // custom
+    "space-if-else": 2
   }
 }
