@@ -24,7 +24,7 @@
     "run-sequence": "~0.3.6"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src/js/easy.js src/js/app/*"
+    "test": "npm run lint",
+    "lint": "eslint src/js/easy.js src/js/app/* --rulesdir eslint_rules"
   }
 }
