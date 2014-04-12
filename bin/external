@@ -1,0 +1,53 @@
+#!/bin/bash -eu
+# Copyright 2014 mbr targeting GmbH. All Rights Reserved.
+# slightly adjusted from https://github.com/pkyeck
+# this is currently only tested under OS X
+# see https://github.com/mbrtargeting/precommit-example/issues/2
+
+MKTEMP="mktemp"
+TOUCH="touch"
+
+BUILD=`${MKTEMP} -d -t tmp`
+trap 'rm -rf $BUILD' EXIT
+
+if git diff-index --quiet --cached HEAD
+then
+  HASH=HEAD
+else
+  HASH=`git stash create`^2
+fi
+
+git archive $HASH | tar xC $BUILD
+
+ROOT=`git rev-parse --show-toplevel`
+
+LINK_DIRS=(
+  node_modules
+  public/node_modules
+  public/app/components
+)
+
+for DIR in "${LINK_DIRS[@]}"
+do
+  if [[ -d $ROOT/$DIR ]]
+  then
+    ln -s $ROOT/$DIR $BUILD/`dirname $DIR`
+  fi
+done
+
+TOUCH_FILES=(
+  package.json
+  public/package.json
+  public/bower.json
+)
+
+for FILE in "${TOUCH_FILES[@]}"
+do
+  if [[ -f $BUILD/$FILE ]]
+  then
+    $TOUCH $BUILD/$FILE
+  fi
+done
+
+cd $BUILD
+"$@"
