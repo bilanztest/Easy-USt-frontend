@@ -4,17 +4,34 @@
 # this is currently only tested under OS X
 # see https://github.com/mbrtargeting/precommit-example/issues/2
 
-MKTEMP="mktemp"
-TOUCH="touch"
+if hash gmktemp 2>/dev/null;
+then
+    MKTEMP="gmktemp"
+else
+    MKTEMP="mktemp"
+fi
 
-BUILD=`${MKTEMP} -d -t tmp`
+if hash gtouch 2>/dev/null;
+then
+    TOUCH="gtouch"
+else
+    TOUCH="touch"
+fi
+
+if [[ "$OSTYPE" == "darwin"* ]];
+then
+    BUILD=`${MKTEMP} -d -t tmp`
+else
+    BUILD=`${MKTEMP} -d`
+fi
+
 trap 'rm -rf $BUILD' EXIT
 
 if git diff-index --quiet --cached HEAD
 then
-  HASH=HEAD
+    HASH=HEAD
 else
-  HASH=`git stash create`^2
+    HASH=`git stash create`^2
 fi
 
 git archive $HASH | tar xC $BUILD
@@ -22,31 +39,35 @@ git archive $HASH | tar xC $BUILD
 ROOT=`git rev-parse --show-toplevel`
 
 LINK_DIRS=(
-  node_modules
-  public/node_modules
-  public/app/components
+    node_modules
+    public/node_modules
+    public/app/components
 )
 
 for DIR in "${LINK_DIRS[@]}"
 do
-  if [[ -d $ROOT/$DIR ]]
-  then
-    ln -s $ROOT/$DIR $BUILD/`dirname $DIR`
-  fi
+    if [[ -d $ROOT/$DIR ]]
+    then
+        ln -s $ROOT/$DIR $BUILD/`dirname $DIR`
+    fi
 done
 
 TOUCH_FILES=(
-  package.json
-  public/package.json
-  public/bower.json
+    package.json
+    public/package.json
+    public/bower.json
 )
 
 for FILE in "${TOUCH_FILES[@]}"
 do
-  if [[ -f $BUILD/$FILE ]]
-  then
-    $TOUCH $BUILD/$FILE
-  fi
+    if [[ -f $BUILD/$FILE ]]
+    then
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            $TOUCH $BUILD/$FILE
+        else
+            $TOUCH -d @0 $BUILD/$FILE
+        fi
+    fi
 done
 
 cd $BUILD
