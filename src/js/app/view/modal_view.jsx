@@ -2,8 +2,8 @@ define(function(require) {
 
   "use strict";
 
+  var $ = require("jquery");
   var React = require("react");
-
   var EAU = require("app/ns");
 
   /**
@@ -48,7 +48,7 @@ define(function(require) {
 
     onCloseClick: function(event) {
       // only fire when background (and not the content) was clicked
-      if(event.target.className === "easy-modal-content") {
+      if (event.target.className === "easy-modal-content") {
         EAU.vent.trigger("modal:close");
       }
     }

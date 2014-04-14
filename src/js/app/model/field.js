@@ -21,6 +21,10 @@ define(function(require) {
     },
     
     parse: function(response) {
+      if (!response) {
+        return null;
+      }
+
       if (typeof response.value !== "undefined") {
         response.value = parseFloat(response.value);
       }
@@ -38,23 +42,23 @@ define(function(require) {
 
     validate: function(attributes) {
       if (!validator.isLength(attributes.description, 1, 100)) {
-        return "description required but can't be longer than 100 characters";
+        return {fieldRef: "desc", msg: "description required but can't be longer than 100 characters"};
       }
 
       if (!validator.isFloat(attributes.value)) {
-        return "value has to be a number";
+        return {fieldRef: "val", msg: "value has to be a number"};
       }
 
       if (attributes.value <= 0 || attributes.value > 1000000) {
-        return "value has to be between 0 and 1000000";
+        return {fieldRef: "val", msg: "value has to be between 0 and 1000000"};
       }
       
       if (!validator.isIn(attributes.ust, [0, 7, 19])) {
-        return "ust has to be either 0, 7 or 19";
+        return {fieldRef: "ust", msg: "ust has to be either 0, 7 or 19"};
       }
 
       if (!validator.isIn(attributes.type, ["in", "out"])) {
-        return "type has to be either 'in' or 'out'";
+        return {fieldRef: "type", msg: "type has to be either 'in' or 'out'"};
       }
     }
 
