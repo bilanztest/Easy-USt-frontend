@@ -8,6 +8,7 @@ var clean = require("gulp-clean");
 var sass = require("gulp-ruby-sass");
 var react = require("gulp-react");
 var replace = require("gulp-replace");
+var eslint = require("gulp-eslint");
 var runSequence = require("run-sequence");
 
 var pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
@@ -81,6 +82,26 @@ gulp.task("js-optimize", ["js-jsx-replace"], function(callback) {
   }, function(err) {
     return callback(err);
   });
+});
+
+
+gulp.task("eslint", function() {
+  return gulp.src(["build/js/easy.js", "build/js/app/**"])
+    .pipe(eslint({
+      rulesdir: "eslint_rules/",
+      config: "./.eslintrc"
+    }))
+    .pipe(eslint.format());
+});
+
+gulp.task("lint", function(callback) {
+  runSequence(
+    "pre-clean",
+    "js-jsx-clean",
+    "eslint",
+    // "post-clean",
+    callback
+  );
 });
 
 
