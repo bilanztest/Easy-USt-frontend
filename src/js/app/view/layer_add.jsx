@@ -2,6 +2,7 @@ define(function(require) {
 
   "use strict";
 
+  var EAU = require("app/ns");
   var React = require("react");
 
   /**
@@ -103,15 +104,15 @@ define(function(require) {
         error: null
       });
 
-      if(this.props.fields) {
+      if (this.props.fields) {
         this.props.fields.create(data, options);
       }
 
-      if(this.props.field) {
+      if (this.props.field) {
         this.props.field.set(data, {validate: true});
 
         // if set validation failed, nothing has changed
-        if(this.props.field.hasChanged()) {
+        if (this.props.field.hasChanged()) {
           this.props.field.save({}, options);
         }
       }
@@ -121,7 +122,6 @@ define(function(require) {
 
     onCloseClick: function(event) {
       event.preventDefault();
-
       EAU.vent.trigger("modal:close");
     },
 
@@ -137,8 +137,8 @@ define(function(require) {
     },
 
     onSuccess: function() {
-      var desc = this.refs.desc.getDOMNode().value = "",
-        val = this.refs.val.getDOMNode().value = "";
+      this.refs.desc.getDOMNode().value = "",
+      this.refs.val.getDOMNode().value = "";
 
       this.setState({
         currentState: "ok",

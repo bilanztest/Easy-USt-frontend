@@ -3,9 +3,9 @@ define(function(require) {
   "use strict";
 
   var React = require("react");
+  var Backbone = require("backbone");
 
   var EAU = require("app/ns");
-
   var Router = require("app/router");
   var mixins = require("app/utils/mixins");
 

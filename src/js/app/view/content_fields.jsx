@@ -3,6 +3,8 @@ define(function(require) {
   "use strict";
 
   var React = require("react");
+
+  var EAU = require("app/ns");
   var Fields = require("app/model/fields");
   var LayerAdd = require("jsx!app/view/layer_add");
   var formater = require("app/utils/formater");
@@ -101,12 +103,11 @@ define(function(require) {
 
     // TODO check if still fetching
     onClickAddField: function(event) {
-      event.preventDefault();
-
       var comp = LayerAdd({
         fields: this.state.fields
       });
 
+      event.preventDefault();
       EAU.vent.trigger("modal:open", comp);
     }
 
