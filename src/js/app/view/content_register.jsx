@@ -22,18 +22,18 @@ define(function(require) {
               if (EAU.user.isLoggedIn()) {
                 return <h2>Benutzer ist bereits registriert</h2>;
 
-              } else {
-                return (
-                  <form id="register" onSubmit={self.onSubmit}>
-                    <h2>Registrieren</h2>
-                    <label htmlFor="email">E-Mail</label>
-                    <input type="email" name="email" ref="email" /><br />
-                    <label htmlFor="pwd">Passwort</label>
-                    <input type="password" name="pwd" ref="pwd" /><br />
-                    <input type="submit" />
-                  </form>
-                );
               }
+              
+              return (
+                <form id="register" onSubmit={self.onSubmit}>
+                  <h2>Registrieren</h2>
+                  <label htmlFor="email">E-Mail</label>
+                  <input type="email" name="email" ref="email" /><br />
+                  <label htmlFor="pwd">Passwort</label>
+                  <input type="password" name="pwd" ref="pwd" /><br />
+                  <input type="submit" />
+                </form>
+              );
             })()
           }
         </div>

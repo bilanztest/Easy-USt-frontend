@@ -21,19 +21,18 @@ define(function(require) {
             (function() {
               if (EAU.user.isLoggedIn()) {
                 return <h2>Login success</h2>;
-
-              } else {
-                return (
-                  <form id="login" onSubmit={self.onSubmit}>
-                    <h2>Anmelden</h2>
-                    <label htmlFor="email">E-Mail</label>
-                    <input type="email" name="email" ref="email" /><br />
-                    <label htmlFor="pwd">Passwort</label>
-                    <input type="password" name="pwd" ref="pwd" /><br />
-                    <input type="submit" />
-                  </form>
-                );
               }
+              
+              return (
+                <form id="login" onSubmit={self.onSubmit}>
+                  <h2>Anmelden</h2>
+                  <label htmlFor="email">E-Mail</label>
+                  <input type="email" name="email" ref="email" /><br />
+                  <label htmlFor="pwd">Passwort</label>
+                  <input type="password" name="pwd" ref="pwd" /><br />
+                  <input type="submit" />
+                </form>
+              );
             })()
           }
         </div>

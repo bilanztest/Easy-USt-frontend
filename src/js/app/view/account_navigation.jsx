@@ -23,15 +23,14 @@ define(function(require) {
                     Hello {EAU.user.get("email")}. <a href="/logout" data-link="action">Logout</a>
                   </p>
                 );
-
-              } else {
-                return (
-                  <p>
-                    <a href="/login" data-link="main">Login</a>
-                    <a href="/register" data-link="main">Register</a>
-                  </p>
-                );
               }
+              
+              return (
+                <p>
+                  <a href="/login" data-link="main">Login</a>
+                  <a href="/register" data-link="main">Register</a>
+                </p>
+              );
             })()
           }
         </div>

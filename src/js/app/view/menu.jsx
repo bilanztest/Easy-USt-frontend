@@ -28,7 +28,7 @@ define(function(require) {
           {
             this.state.links.map(function(link, index) {
               if (link.login && !EAU.user.isLoggedIn()) {
-                return;
+                return null;
               }
 
               return <li key={index}><a href={link.href} data-link="main">{link.label}</a></li>;

@@ -7,8 +7,6 @@ define(function(require) {
   var EAU = require("app/ns");
   var Fields = require("app/model/fields");
   var LayerAdd = require("jsx!app/view/layer_add");
-  var formater = require("app/utils/formater");
-
   var FieldView = require("jsx!app/view/field_view");
 
   /**
@@ -19,8 +17,6 @@ define(function(require) {
   var ContentShow = React.createClass({
 
     componentWillMount: function() {
-      var self = this;
-
       this.state.fields.on("reset", function() {
         this.setState({
           fetching: false
