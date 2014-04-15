@@ -7,7 +7,7 @@
   "readmeFilename": "readme.md",
   "repository": {
     "type": "git",
-    "url": "https://pkyeck@github.com/bilanztest/Easy-USt-frontend.git"
+    "url": "https://github.com/bilanztest/Easy-USt-frontend.git"
   },
   "devDependencies": {
     "eslint": "~0.4.2",
