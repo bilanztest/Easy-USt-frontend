@@ -1,6 +1,6 @@
 # Easy USt Frontend
 
-[![Code Climate](https://codeclimate.com/github/bilanztest/Easy-USt-frontend.png)](https://codeclimate.com/github/bilanztest/Easy-USt-frontend)
+[![Build Status](https://travis-ci.org/bilanztest/Easy-USt-frontend.svg?branch=master)](https://travis-ci.org/bilanztest/Easy-USt-frontend) [![Code Climate](https://codeclimate.com/github/bilanztest/Easy-USt-frontend.png)](https://codeclimate.com/github/bilanztest/Easy-USt-frontend)
 
 ## Setup of local single-page-app
 
