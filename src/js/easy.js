@@ -4,8 +4,8 @@ require.config({
     underscore: "vendor/lodash.compat.2.4.1",
     backbone: "vendor/backbone.1.1.2",
     
-    react: "vendor/react.0.9.0",
-    JSXTransformer: "vendor/plugins/JSXTransformer.0.9.0",
+    react: "vendor/react.0.10.0",
+    JSXTransformer: "vendor/plugins/JSXTransformer.0.10.0",
 
     validator: "vendor/validator.3.4.0",
 
