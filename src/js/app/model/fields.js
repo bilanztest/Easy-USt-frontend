@@ -12,7 +12,7 @@ define(function(require) {
    */
   var Fields = Backbone.Collection.extend({
     model: Field,
-    url: "/api/fields"
+    url: "/api/field"
     
   }); // end Fields
 
