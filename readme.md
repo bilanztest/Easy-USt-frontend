@@ -1,6 +1,27 @@
-# Easy USt Frontend
+# Easy USt Frontend [![Build Status](https://travis-ci.org/bilanztest/Easy-USt-frontend.svg?branch=master)](https://travis-ci.org/bilanztest/Easy-USt-frontend) [![Code Climate](https://codeclimate.com/github/bilanztest/Easy-USt-frontend.png)](https://codeclimate.com/github/bilanztest/Easy-USt-frontend)
 
-[![Build Status](https://travis-ci.org/bilanztest/Easy-USt-frontend.svg?branch=master)](https://travis-ci.org/bilanztest/Easy-USt-frontend) [![Code Climate](https://codeclimate.com/github/bilanztest/Easy-USt-frontend.png)](https://codeclimate.com/github/bilanztest/Easy-USt-frontend)
+
+- [Gulp/npm tasks](#gulpnpm-tasks)
+- [Setup of local single-page-app](#setup-of-local-single-page-app)
+
+
+## Gulp/npm tasks
+
+```Shell
+# build project
+$ gulp build
+
+# deploy to production server
+$ gulp deploy --env production
+
+# lint JS soure files (w/o JSX)
+$ npm lint
+
+# lint compiled JS + JSX
+$ gulp lint
+
+```
+
 
 ## Setup of local single-page-app
 
