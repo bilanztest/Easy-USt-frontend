@@ -99,7 +99,7 @@ define(function(require) {
           description: desc,
           value: val,
           ust: ust,
-          booked: new Date(2014, month-1, day),
+          booked: new Date(2014, month - 1, day),
           type: typeIn.checked ? "in" : "out"
         },
         options = {
@@ -149,7 +149,7 @@ define(function(require) {
     },
 
     onSuccess: function() {
-      this.refs.desc.getDOMNode().value = "",
+      this.refs.desc.getDOMNode().value = "";
       this.refs.val.getDOMNode().value = "";
 
       this.setState({
