@@ -24,8 +24,8 @@ define(function(require) {
         response.ust = parseInt(response.ust, 10);
       }
       
-      if (typeof response.date !== "undefined") {
-        response.date = new Date(response.date);
+      if (typeof response.booked !== "undefined") {
+        response.booked = new Date(response.booked);
       }
 
       return response;

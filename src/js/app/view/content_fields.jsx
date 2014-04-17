@@ -62,7 +62,8 @@ define(function(require) {
         }
       });
 
-      // XXX do we have to sort or could we rely on server response
+      ins.sort(this.sortByBooked);
+      outs.sort(this.sortByBooked);
 
       return (
         <div className="eau-main-content">
@@ -74,7 +75,7 @@ define(function(require) {
                 <tbody>
                   {
                     ins.map(function(field, index) {
-                      return <FieldView type="in" field={field} index={index}/>
+                      return <FieldView type="in" field={field} index={index}/>;
                     })
                   }
                 </tbody>
@@ -86,7 +87,7 @@ define(function(require) {
                 <tbody>
                   {
                     outs.map(function(field, index) {
-                      return <FieldView type="out" field={field} index={index}/>
+                      return <FieldView type="out" field={field} index={index}/>;
                     })
                   }
                 </tbody>
@@ -95,6 +96,18 @@ define(function(require) {
           </div>
         </div>
       );
+    },
+
+    sortByBooked: function(a, b) {
+      if (a.get("booked").getTime() < b.get("booked").getTime()) {
+        return -1;
+      }
+
+      if (a.get("booked").getTime() > b.get("booked").getTime()) {
+        return 1;
+      }
+
+      return 0;
     },
 
     // TODO check if still fetching
