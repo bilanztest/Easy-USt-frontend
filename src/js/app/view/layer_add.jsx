@@ -43,6 +43,8 @@ define(function(require) {
       var field = this.props.field,
         inChecked = field && field.get("type") === "in" || "",
         outChecked = field && field.get("type") === "out" || "",
+        day = field && new Date(field.get("booked")).getDate() || 1,
+        month = field && field.get("booked").getMonth() + 1 || 1,
         desc = field && field.get("description") || null,
         value = field && field.get("value") || null,
         ust = field && field.get("ust") || "19",
@@ -62,6 +64,14 @@ define(function(require) {
             <label>
               <input type="radio" name="type" value="out" defaultChecked={outChecked ? "defaultChecked" : ""}/> Ausgabe
             </label><br />
+
+            <label htmlFor="value">Tag</label>
+            <input type="number" step="1" min="1" max="31" name="day" ref="day" defaultValue={day}/>
+
+            <label htmlFor="value">Monat</label>
+            <input type="number" step="1" min="1" max="12" name="month" ref="month" defaultValue={month}/><br />
+
+            
             <label htmlFor="description">Beschreibung</label>
             <input type="text" name="description" ref="desc" defaultValue={desc} className={descErrorClass}/><br />
             <label htmlFor="value">Wert</label>
@@ -80,6 +90,8 @@ define(function(require) {
 
     onSubmit: function(event) {
       var typeIn = this.refs.typeIn.getDOMNode(),
+        day = this.refs.day.getDOMNode().value,
+        month = this.refs.month.getDOMNode().value,
         desc = this.refs.desc.getDOMNode().value.trim(),
         val = this.refs.val.getDOMNode().value,
         ust = this.refs.ust.getDOMNode().value,
@@ -87,7 +99,7 @@ define(function(require) {
           description: desc,
           value: val,
           ust: ust,
-          date: new Date(),
+          booked: new Date(2014, month-1, day),
           type: typeIn.checked ? "in" : "out"
         },
         options = {

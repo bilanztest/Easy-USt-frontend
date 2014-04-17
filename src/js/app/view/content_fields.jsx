@@ -62,7 +62,8 @@ define(function(require) {
         }
       });
 
-      // XXX do we have to sort or could we rely on server response
+      ins.sort(this._sortAgainsBooked);
+      outs.sort(this._sortAgainsBooked);
 
       return (
         <div className="eau-main-content">
@@ -105,6 +106,16 @@ define(function(require) {
 
       event.preventDefault();
       EAU.vent.trigger("modal:open", comp);
+    },
+
+    _sortAgainsBooked: function(a, b) {
+      if (a.get("booked").getTime() < b.get("booked").getTime())
+         return -1;
+
+      if (a.get("booked").getTime() > b.get("booked").getTime())
+         return 1;
+
+      return 0;
     }
 
   }); // end ContentShow

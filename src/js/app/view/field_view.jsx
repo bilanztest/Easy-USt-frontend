@@ -18,7 +18,7 @@ define(function(require) {
     render: function() {
       return (
         <tr key={this.props.type + this.props.index}>
-          <td>{formater.date(this.props.field.get("date"), "dd.MM.")}</td>
+          <td>{formater.date(this.props.field.get("booked"), "dd.MM.")}</td>
           <td>{this.props.field.get("description")}</td>
           <td>{this.props.field.get("value") + "€"}</td>
           <td>{this.props.field.get("ust") + "%"}</td>
