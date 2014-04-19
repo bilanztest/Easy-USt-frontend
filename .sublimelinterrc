@@ -1,0 +1,7 @@
+{
+  "linters": {
+    "eslint": {
+      "args": ["--rulesdir", "./eslint_rules"]
+    }
+  }
+}
