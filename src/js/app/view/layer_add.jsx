@@ -45,6 +45,7 @@ define(function(require) {
         outChecked = field && field.get("type") === "out" || "",
         day = field && new Date(field.get("booked")).getDate() || 1,
         month = field && field.get("booked").getMonth() + 1 || 1,
+        year = field && field.get("booked").getFullYear() || 2014,
         desc = field && field.get("description") || null,
         value = field && field.get("value") || null,
         ust = field && field.get("ust") || "19",
@@ -69,8 +70,10 @@ define(function(require) {
             <input type="number" step="1" min="1" max="31" name="day" ref="day" defaultValue={day}/>
 
             <label htmlFor="value">Monat</label>
-            <input type="number" step="1" min="1" max="12" name="month" ref="month" defaultValue={month}/><br />
+            <input type="number" step="1" min="1" max="12" name="month" ref="month" defaultValue={month}/>
 
+            <label htmlFor="value">Jahr</label>
+            <input type="number" step="1" min="2000" max="2015" name="year" ref="year" defaultValue={year}/><br />
             
             <label htmlFor="description">Beschreibung</label>
             <input type="text" name="description" ref="desc" defaultValue={desc} className={descErrorClass}/><br />
@@ -92,6 +95,7 @@ define(function(require) {
       var typeIn = this.refs.typeIn.getDOMNode(),
         day = this.refs.day.getDOMNode().value,
         month = this.refs.month.getDOMNode().value,
+        year = this.refs.year.getDOMNode().value,
         desc = this.refs.desc.getDOMNode().value.trim(),
         val = this.refs.val.getDOMNode().value,
         ust = this.refs.ust.getDOMNode().value,
@@ -99,7 +103,7 @@ define(function(require) {
           description: desc,
           value: val,
           ust: ust,
-          booked: new Date(2014, month - 1, day),
+          booked: new Date(year, month-1, day),
           type: typeIn.checked ? "in" : "out"
         },
         options = {
