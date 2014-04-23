@@ -68,13 +68,13 @@ define(function(require) {
               <input type="radio" name="type" value="out" defaultChecked={outChecked ? "defaultChecked" : ""}/> Ausgabe
             </label><br />
 
-            <label htmlFor="value">Tag</label>
+            <label htmlFor="day">Tag</label>
             <input type="number" step="1" min="1" max="31" name="day" ref="day" defaultValue={day}/>
 
-            <label htmlFor="value">Monat</label>
+            <label htmlFor="month">Monat</label>
             <input type="number" step="1" min="1" max="12" name="month" ref="month" defaultValue={month}/>
 
-            <label htmlFor="value">Jahr</label>
+            <label htmlFor="year">Jahr</label>
             <input type="number" step="1" min="2000" max="2015" name="year" ref="year" defaultValue={year}/><br />
             
             <label htmlFor="description">Beschreibung</label>
