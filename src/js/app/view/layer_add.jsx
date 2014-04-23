@@ -54,6 +54,8 @@ define(function(require) {
         valErrorClass = this.state.errorField === "val" && "input-error" || null,
         ustErrorClass = this.state.errorField === "ust" && "input-error" || null;
 
+      inChecked = inChecked === "" && outChecked === "" && true;
+
       return (
         <div className="easy-modal-add-field">
           <a href="/close" onClick={this.onCloseClick}>&times; schließen</a>
