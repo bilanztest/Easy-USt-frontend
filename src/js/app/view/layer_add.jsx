@@ -82,8 +82,14 @@ define(function(require) {
             <label htmlFor="value">Wert</label>
             <input type="number" step="0.01" min="0" max="1000000" name="value" ref="val" defaultValue={value} className={valErrorClass}/><br />
             <label htmlFor="ust">Umsatzsteuer %</label>
-            <input type="number" min="0" max="19" name="ust" ref="ust" defaultValue={ust} className={ustErrorClass}/><br />
-            { 
+            
+            <select name="ust" ref="ust" defaultValue={ust} className={ustErrorClass}>
+              <option value="0">0</option> 
+              <option value="7">7</option>
+              <option value="19">19</option>
+            </select><br/>
+
+            {
               this.state.error !== null ?
                 <div className="error">{this.state.error.message}</div> : null
             }
