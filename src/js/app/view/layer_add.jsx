@@ -4,6 +4,11 @@ define(function(require) {
 
   var EAU = require("app/ns");
   var React = require("react");
+  var $ = require("jquery");
+
+  var Field = require("app/model/field");
+
+  require("typeahead");
 
   /**
    *
@@ -15,104 +20,157 @@ define(function(require) {
     getInitialState: function() {
       return {
         currentState: "ok",
-        error: null,
-        errorField: null
+        errors: [],
+        errorField: null,
+
+        type: "in",
+        day: "",
+        month: "",
+        year: "",
+        desc: "",
+        value: "",
+        ust: 19,
+        isSending: null
       };
     },
 
     componentWillMount: function() {
-      var modelOrCollection = this.props.fields || this.props.field;
+      // for add we pass the fieldColletion, for edit the fieldModel to edit
+      var modelOrCollection = this.props.fields || this.props.field,
+        field = this.props.field;
 
-      modelOrCollection.on("invalid", function(model, errorObj) {
-        // TODO highlight input that is invalid
-        this.setState({
+      // set field states if this is an edit
+      this.setState({
+        type: field && field.get("type"),
+        day: field && new Date(field.get("booked")).getDate(),
+        month: field && field.get("booked").getMonth() + 1,
+        year: field && field.get("booked").getFullYear(),
+        desc: field && field.get("description"),
+        value: field && field.get("value"),
+        ust: field && field.get("ust") || "19"
+      });
+
+      modelOrCollection.on("invalid", function(model, errorArray) {
+        var stateObj = {
           currentState: "error",
-          error: new Error(errorObj.msg),
-          errorField: errorObj.fieldRef
+          // create array of error messages
+          errors: errorArray.map(function(item) {
+            return item.msg;
+          })
+        };
+
+        // add error classes
+        errorArray.forEach(function(item) {
+          stateObj[item.fieldRef + "ErrorClass"] = "input-error";
         });
+
+        this.setState(stateObj);
       }, this);
     },
 
     componentWillUnmount: function() {
       var modelOrCollection = this.props.fields || this.props.field;
-
       modelOrCollection.off(null, null, this);
     },
 
+    componentDidMount: function() {
+      // check if typeaheadEngine was passed, if this is an edit the
+      // typeaheadEngine is NOT passed
+      if (this.props.typeaheadEngine) {
+        var $input = $(this.getDOMNode()).find("input[name=desc]");
+        $input.typeahead({
+          minLength: 3,
+          highlight: true,
+        },
+        {
+          name: "dataset",
+          displayKey: "description",
+          source: this.props.fields.engine.ttAdapter()
+        });
+
+        $input.on("typeahead:selected", $.proxy(this._typeaheadSelected, this));
+        $input.on("typeahead:autocompleted", $.proxy(this._typeaheadSelected, this));
+      }
+    },
+
+    _typeaheadSelected: function(evt, data) {
+      // manually close typeahead because this is not done by default
+      // on autocomplete
+      var $input = $(this.getDOMNode()).find("input[name=desc]");
+      $input.typeahead("close");
+
+      this.setState({
+        type: data && data.type,
+        day: data && data.booked.getDate(),
+        month: data && data.booked.getMonth() + 1,
+        year: data && data.booked.getFullYear(),
+        desc: data && data.description,
+        value: data && data.value,
+        ust: data && data.ust
+      });
+    },
+
+    handleChange: function(evt) {
+      var o = {};
+      o[evt.target.name] = evt.target.value;
+      this.setState(o);
+    },
+
     render: function() {
-      var field = this.props.field,
-        inChecked = field && field.get("type") === "in" || "",
-        outChecked = field && field.get("type") === "out" || "",
-        day = field && new Date(field.get("booked")).getDate() || 1,
-        month = field && field.get("booked").getMonth() + 1 || 1,
-        year = field && field.get("booked").getFullYear() || 2014,
-        desc = field && field.get("description") || null,
-        value = field && field.get("value") || null,
-        ust = field && field.get("ust") || "19",
-        isSending = this.state.currentState === "sending",
-        descErrorClass = this.state.errorField === "desc" && "input-error" || null,
-        valErrorClass = this.state.errorField === "val" && "input-error" || null,
-        ustErrorClass = this.state.errorField === "ust" && "input-error" || null;
-
-      inChecked = inChecked === "" && outChecked === "" && true;
-
       return (
         <div className="easy-modal-add-field">
           <a href="/close" onClick={this.onCloseClick}>&times; schließen</a>
           <h2>Feld hinzufügen</h2>
           <form id="add" onSubmit={this.onSubmit}>
             <label>
-              <input type="radio" name="type" ref="typeIn" value="in" defaultChecked={inChecked ? "defaultChecked" : ""}/> Einnahme
+              <input type="radio" name="type" ref="typeIn" value="in" checked={this.state.type === "in"} className={this.state.typeErrorClass} onChange={this.handleChange}/> Einnahme
             </label><br />
             <label>
-              <input type="radio" name="type" value="out" defaultChecked={outChecked ? "defaultChecked" : ""}/> Ausgabe
+              <input type="radio" name="type" ref="typeOut" value="out" checked={this.state.type === "out"} className={this.state.typeErrorClass} onChange={this.handleChange}/> Ausgabe
             </label><br />
 
             <label htmlFor="day">Tag</label>
-            <input type="number" step="1" min="1" max="31" name="day" ref="day" defaultValue={day}/>
+            <input type="number" step="1" min="1" max="31" name="day" ref="day" value={this.state.day} className={this.state.bookedErrorClass} onChange={this.handleChange}/>
 
             <label htmlFor="month">Monat</label>
-            <input type="number" step="1" min="1" max="12" name="month" ref="month" defaultValue={month}/>
+            <input type="number" step="1" min="1" max="12" name="month" ref="month" value={this.state.month} className={this.state.bookedErrorClass} onChange={this.handleChange}/>
 
             <label htmlFor="year">Jahr</label>
-            <input type="number" step="1" min="2000" max="2015" name="year" ref="year" defaultValue={year}/><br />
+            <input type="number" step="1" min="2010" max="2015" name="year" ref="year" value={this.state.year} className={this.state.bookedErrorClass} onChange={this.handleChange}/><br />
             
-            <label htmlFor="description">Beschreibung</label>
-            <input type="text" name="description" ref="desc" defaultValue={desc} className={descErrorClass}/><br />
+            <label htmlFor="desc">Beschreibung</label>
+            <input type="text" name="desc" ref="desc" defaultValue={this.state.desc} className={this.state.descErrorClass}/><br />
+
             <label htmlFor="value">Wert</label>
-            <input type="number" step="0.01" min="0" max="1000000" name="value" ref="val" defaultValue={value} className={valErrorClass}/><br />
+            <input type="number" step="1" min="0" max="1000000" name="value" ref="value" value={this.state.value} className={this.state.valueErrorClass} onChange={this.handleChange}/><br />
+
             <label htmlFor="ust">Umsatzsteuer %</label>
-            
-            <select name="ust" ref="ust" defaultValue={ust} className={ustErrorClass}>
+            <select name="ust" ref="ust" value={this.state.ust} className={this.state.ustErrorClass} onChange={this.handleChange}>
               <option value="0">0</option> 
               <option value="7">7</option>
               <option value="19">19</option>
             </select><br/>
-
             {
-              this.state.error !== null ?
-                <div className="error">{this.state.error.message}</div> : null
+              this.state.errors.map(function(error) {
+                return <p>{error}</p>
+              })
             }
-            <input type="submit" disabled={isSending} />
+            <input type="submit" disabled={this.state.isSending} />
           </form>
         </div>
       );
     },
 
     onSubmit: function(event) {
-      var typeIn = this.refs.typeIn.getDOMNode(),
-        day = this.refs.day.getDOMNode().value,
-        month = this.refs.month.getDOMNode().value,
-        year = this.refs.year.getDOMNode().value,
-        desc = this.refs.desc.getDOMNode().value.trim(),
-        val = this.refs.val.getDOMNode().value,
-        ust = this.refs.ust.getDOMNode().value,
-        data = {
-          description: desc,
-          value: val,
-          ust: ust,
-          booked: new Date(year, month-1, day),
-          type: typeIn.checked ? "in" : "out"
+      var data = {
+          type: this.state.type,
+          // special handling for the desciption field. Since we apply typeahead
+          // to this DOM element we use it as "Uncontrolled Component" (see
+          // react docs)
+          description: this.refs.desc.getDOMNode().value,
+          value: this.state.value,
+          ust: this.state.ust,
+          booked: new Date(this.state.year, this.state.month - 1, this.state.day)
         },
         options = {
           validate: true,
@@ -125,7 +183,7 @@ define(function(require) {
 
       this.setState({
         currentState: "sending",
-        error: null
+        errors: []
       });
 
       if (this.props.fields) {
@@ -150,6 +208,8 @@ define(function(require) {
     },
 
     onError: function(model, xhr) {
+      // TODO this will break things until the backend validater is modified
+
       var response = JSON.parse(xhr.responseText);
 
       this.setState({
@@ -162,12 +222,7 @@ define(function(require) {
 
     onSuccess: function() {
       this.refs.desc.getDOMNode().value = "";
-      this.refs.val.getDOMNode().value = "";
-
-      this.setState({
-        currentState: "ok",
-        error: null
-      });
+      this.setState(this.getInitialState());
 
       if (this.props.field) {
         EAU.vent.trigger("modal:close");
