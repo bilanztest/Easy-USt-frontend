@@ -74,13 +74,15 @@ define(function(require) {
     },
 
     componentDidMount: function() {
+      var $input;
+
       // check if typeaheadEngine was passed, if this is an edit the
       // typeaheadEngine is NOT passed
       if (this.props.typeaheadEngine) {
-        var $input = $(this.getDOMNode()).find("input[name=desc]");
+        $input = $(this.getDOMNode()).find("input[name=desc]");
         $input.typeahead({
           minLength: 3,
-          highlight: true,
+          highlight: true
         },
         {
           name: "dataset",
@@ -97,6 +99,7 @@ define(function(require) {
       // manually close typeahead because this is not done by default
       // on autocomplete
       var $input = $(this.getDOMNode()).find("input[name=desc]");
+
       $input.typeahead("close");
 
       this.setState({
@@ -112,6 +115,7 @@ define(function(require) {
 
     handleChange: function(evt) {
       var o = {};
+
       o[evt.target.name] = evt.target.value;
       this.setState(o);
     },
