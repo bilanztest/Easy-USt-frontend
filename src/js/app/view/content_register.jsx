@@ -57,7 +57,7 @@ define(function(require) {
         email: email,
         pwd: pwd
       }, {
-        success: function(model, response) {
+        success: function() {
           EAU.vent.trigger("goto", "/login");
         },
         error: function() {
