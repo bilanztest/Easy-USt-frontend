@@ -39,7 +39,7 @@ define(function(require) {
 
       // set field states if this is an edit
       this.setState({
-        type: field && field.get("type"),
+        type: (field && field.get("type")) || this.state.type,
         day: field && new Date(field.get("booked")).getDate(),
         month: field && field.get("booked").getMonth() + 1,
         year: field && field.get("booked").getFullYear(),
@@ -155,7 +155,7 @@ define(function(require) {
 
       // TODO handle wrongly added model in collection
     },
-
+    
     onInputChange: function(evt) {
       var o = {};
 
@@ -165,21 +165,21 @@ define(function(require) {
 
     onSubmit: function(event) {
       var data = {
-          type: this.state.type,
-          // special handling for the desciption field. Since we apply typeahead
-          // to this DOM element we use it as "Uncontrolled Component" (see
-          // react docs)
-          description: this.refs.desc.getDOMNode().value,
-          value: this.state.value,
-          ust: this.state.ust,
-          booked: new Date(this.state.year, this.state.month - 1, this.state.day)
-        },
-        options = {
-          validate: true,
-          parse: true,
-          success: this.onSuccess,
-          error: this.onError
-        };
+        type: this.state.type,
+        // special handling for the desciption field. Since we apply typeahead
+        // to this DOM element we use it as "Uncontrolled Component" (see
+        // react docs)
+        description: this.refs.desc.getDOMNode().value,
+        value: this.state.value,
+        ust: this.state.ust,
+        booked: new Date(this.state.year, this.state.month - 1, this.state.day)
+      },
+      options = {
+        validate: true,
+        parse: true,
+        success: this.onSuccess,
+        error: this.onError
+      };
 
       event.preventDefault();
 
@@ -209,7 +209,7 @@ define(function(require) {
       this.setState(this.getInitialState());
 
       if (this.props.field) {
-      EAU.vent.trigger("modal:close");
+        EAU.vent.trigger("modal:close");
       }
     },
 
