@@ -113,7 +113,8 @@ define(function(require) {
     // TODO check if still fetching
     onClickAddField: function(event) {
       var comp = LayerAdd({
-        fields: this.state.fields
+        fields: this.state.fields,
+        typeaheadEngine: this.state.fields.engine
       });
 
       event.preventDefault();
