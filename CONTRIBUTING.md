@@ -9,11 +9,10 @@ Exception:
 
 Use [require.js](http://requirejs.org/) modules in [CommonJS-style](http://requirejs.org/docs/api.html#cjsmodule).
 
-Spaces after `:`, `()` and `if` (and others).
-No linebreaks between BB properties.
-Linebreaks between BB functions.
-"private" function start with `_`.
-First BB "public" functions, then custom "public" functions, then "private".
+Spaces after `:`, `()` and `if` (and others).  
+No linebreaks between BB properties.  
+Linebreaks between BB functions.  
+First BB "public" functions, then custom "public" functions, then "private".  
 Linebreak after single var statements on beginning of function.
 
 Example (stripped):
