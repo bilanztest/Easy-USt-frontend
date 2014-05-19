@@ -47,7 +47,7 @@ define(function(require) {
       this.render();
     },
 
-    _onModelUpdate: function(model) {
+    onModelUpdate: function(model) {
       var obj;
 
       this.$el.find("h4").text("Block + " + model.id);
