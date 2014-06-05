@@ -16,6 +16,7 @@ define(function(require) {
       "login": "login",
       "logout": "logout",
       "register": "register",
+      "about": "about",
       "*error": "404"
     }
   }); // end Router
