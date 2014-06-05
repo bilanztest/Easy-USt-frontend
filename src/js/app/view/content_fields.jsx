@@ -32,7 +32,7 @@ define(function(require) {
 
     componentWillUnmount: function() {
       this.state.fields.off(null, null, this);
-      this.closeOverlay();
+      EAU.vent.trigger("modal:close");
     },
 
     getInitialState: function() {
