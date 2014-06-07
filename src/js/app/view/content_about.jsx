@@ -14,7 +14,7 @@ define(function(require) {
     render: function() {
       return (
         <div className="eau-main-content">
-          About Easy-Ust
+          <h2>About Easy-Ust</h2>
         </div>
       );
     }
