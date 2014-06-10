@@ -69,9 +69,12 @@ define(function(require) {
           <div className="eau-main-content-fields-header">
             <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> | <a href="/send" data-link="main">Jetzt übertragen</a>
           </div>
-          <div className="eau-fields-tables">
+          <div className="eau-fields-table">
+            <h2>Einnahmen</h2>
+            <h2>Ausgaben</h2>
+          </div>
+          <div className="eau-fields-table">
             <div>
-              <h2>Einnahmen</h2>
               <table>
                 <tbody>
                   {
