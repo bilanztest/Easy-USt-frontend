@@ -73,9 +73,9 @@ define(function(require) {
             <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> | <a href="/send" data-link="main">Jetzt übertragen</a>
           </div>
           <div className="eau-fields-tables">
-            <div className="eau-fields-table-container">
+            <div>
               <h2>Einnahmen</h2>
-              <table className="eau-fields-table">
+              <table>
                 <tbody>
                   {
                     ins.map(function(field, index) {
@@ -85,9 +85,9 @@ define(function(require) {
                 </tbody>
               </table>
             </div>
-            <div className="eau-table-container">
+            <div>
               <h2>Ausgaben</h2>
-              <table className="eau-fields-table">
+              <table>
                 <tbody>
                   {
                     outs.map(function(field, index) {

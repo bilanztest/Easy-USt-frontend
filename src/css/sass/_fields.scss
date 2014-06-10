@@ -1,15 +1,10 @@
 .eau-fields-tables {
-  @extend .clearfix;
-}
-
-.eau-fields-table-container {
-  float: left;
-  width: 50%;
-}
-
-.eau-fields-table {
-  border-collapse: collapse;
-
+  display: table;
+  width: 100%;
+  & > * {
+    display: table-cell;
+    width: 50%;
+  }
   td, th {
     padding: 0.25em 0.75em 0.25em 0;
     text-align: left;
