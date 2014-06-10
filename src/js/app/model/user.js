@@ -12,7 +12,18 @@ define(function(require) {
    *
    */
   var User = Backbone.Model.extend({
-    url: "/api/user",
+    url: "/api/user/me",
+    defaults: {
+      lastName: "",
+      firstName: "",
+      companyType: "",
+      legalForm: "",
+      street: "",
+      streetNumber: "",
+      zipCode: "",
+      city: "",
+      taxNumber: ""
+    },
 
     initialize: function() {
       var data;

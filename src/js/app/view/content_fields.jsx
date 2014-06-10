@@ -16,6 +16,13 @@ define(function(require) {
    */
   var ContentShow = React.createClass({
 
+    getInitialState: function() {
+      return {
+        fields: new Fields(),
+        fetching: true
+      };
+    },
+
     componentWillMount: function() {
       this.state.fields.on("reset", function() {
         this.setState({
@@ -32,14 +39,7 @@ define(function(require) {
 
     componentWillUnmount: function() {
       this.state.fields.off(null, null, this);
-      this.closeOverlay();
-    },
-
-    getInitialState: function() {
-      return {
-        fields: new Fields(),
-        fetching: true
-      };
+      EAU.vent.trigger("modal:close");
     },
 
     render: function() {
@@ -67,7 +67,9 @@ define(function(require) {
 
       return (
         <div className="eau-main-content">
-          <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a>
+          <div className="eau-main-content-fields-header">
+            <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> | <a href="/send" data-link="main">Jetzt übertragen</a>
+          </div>
           <div className="eau-fields-tables">
             <div className="eau-fields-table-container">
               <h2>Einnahmen</h2>

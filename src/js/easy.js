@@ -13,7 +13,9 @@ require.config({
     jsx: "vendor/plugins/require.jsx.0.1.0",
 
     typeahead: "vendor/typeahead.jquery.0.10.2",
-    bloodhound: "vendor/bloodhound.0.10.2"
+    bloodhound: "vendor/bloodhound.0.10.2",
+
+    moment: "vendor/moment_with_lang.min.2.6.0"
   },
 
   shim:{

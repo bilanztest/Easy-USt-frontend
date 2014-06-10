@@ -20,7 +20,7 @@ define(function(require) {
               if (EAU.user.isLoggedIn()) {
                 return (
                   <p>
-                    Hello {EAU.user.get("email")}. <a href="/logout" data-link="action">Logout</a>
+                    Hello <a href="/settings" data-link="main">{EAU.user.get("email")}</a> - <a href="/logout" data-link="action">Logout</a>
                   </p>
                 );
               }

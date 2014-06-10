@@ -6,8 +6,6 @@ define(function(require) {
   var React = require("react");
   var $ = require("jquery");
 
-  var Field = require("app/model/field");
-
   require("typeahead");
 
   /**
@@ -41,7 +39,7 @@ define(function(require) {
 
       // set field states if this is an edit
       this.setState({
-        type: field && field.get("type"),
+        type: (field && field.get("type")) || this.state.type,
         day: field && new Date(field.get("booked")).getDate(),
         month: field && field.get("booked").getMonth() + 1,
         year: field && field.get("booked").getFullYear(),
@@ -70,6 +68,7 @@ define(function(require) {
 
     componentWillUnmount: function() {
       var modelOrCollection = this.props.fields || this.props.field;
+
       modelOrCollection.off(null, null, this);
     },
 
@@ -83,41 +82,15 @@ define(function(require) {
         $input.typeahead({
           minLength: 3,
           highlight: true
-        },
-        {
+        }, {
           name: "dataset",
           displayKey: "description",
           source: this.props.fields.engine.ttAdapter()
         });
 
-        $input.on("typeahead:selected", $.proxy(this._typeaheadSelected, this));
-        $input.on("typeahead:autocompleted", $.proxy(this._typeaheadSelected, this));
+        $input.on("typeahead:selected", $.proxy(this.onTypeaheadSelected, this));
+        $input.on("typeahead:autocompleted", $.proxy(this.onTypeaheadSelected, this));
       }
-    },
-
-    _typeaheadSelected: function(evt, data) {
-      // manually close typeahead because this is not done by default
-      // on autocomplete
-      var $input = $(this.getDOMNode()).find("input[name=desc]");
-
-      $input.typeahead("close");
-
-      this.setState({
-        type: data && data.type,
-        day: data && data.booked.getDate(),
-        month: data && data.booked.getMonth() + 1,
-        year: data && data.booked.getFullYear(),
-        desc: data && data.description,
-        value: data && data.value,
-        ust: data && data.ust
-      });
-    },
-
-    handleChange: function(evt) {
-      var o = {};
-
-      o[evt.target.name] = evt.target.value;
-      this.setState(o);
     },
 
     render: function() {
@@ -127,29 +100,29 @@ define(function(require) {
           <h2>Feld hinzufügen</h2>
           <form id="add" onSubmit={this.onSubmit}>
             <label>
-              <input type="radio" name="type" ref="typeIn" value="in" checked={this.state.type === "in"} className={this.state.typeErrorClass} onChange={this.handleChange}/> Einnahme
+              <input type="radio" name="type" ref="typeIn" value="in" checked={this.state.type === "in"} className={this.state.typeErrorClass} onChange={this.onInputChange}/> Einnahme
             </label><br />
             <label>
-              <input type="radio" name="type" ref="typeOut" value="out" checked={this.state.type === "out"} className={this.state.typeErrorClass} onChange={this.handleChange}/> Ausgabe
+              <input type="radio" name="type" ref="typeOut" value="out" checked={this.state.type === "out"} className={this.state.typeErrorClass} onChange={this.onInputChange}/> Ausgabe
             </label><br />
 
             <label htmlFor="day">Tag</label>
-            <input type="number" step="1" min="1" max="31" name="day" ref="day" value={this.state.day} className={this.state.bookedErrorClass} onChange={this.handleChange}/>
+            <input type="number" step="1" min="1" max="31" name="day" ref="day" value={this.state.day} className={this.state.bookedErrorClass} onChange={this.onInputChange}/>
 
             <label htmlFor="month">Monat</label>
-            <input type="number" step="1" min="1" max="12" name="month" ref="month" value={this.state.month} className={this.state.bookedErrorClass} onChange={this.handleChange}/>
+            <input type="number" step="1" min="1" max="12" name="month" ref="month" value={this.state.month} className={this.state.bookedErrorClass} onChange={this.onInputChange}/>
 
             <label htmlFor="year">Jahr</label>
-            <input type="number" step="1" min="2010" max="2015" name="year" ref="year" value={this.state.year} className={this.state.bookedErrorClass} onChange={this.handleChange}/><br />
+            <input type="number" step="1" min="2010" max="2015" name="year" ref="year" value={this.state.year} className={this.state.bookedErrorClass} onChange={this.onInputChange}/><br />
             
             <label htmlFor="desc">Beschreibung</label>
             <input type="text" name="desc" ref="desc" defaultValue={this.state.desc} className={this.state.descErrorClass}/><br />
 
             <label htmlFor="value">Wert</label>
-            <input type="number" step="1" min="0" max="1000000" name="value" ref="value" value={this.state.value} className={this.state.valueErrorClass} onChange={this.handleChange}/><br />
+            <input type="number" step="1" min="0" max="1000000" name="value" ref="value" value={this.state.value} className={this.state.valueErrorClass} onChange={this.onInputChange}/><br />
 
             <label htmlFor="ust">Umsatzsteuer %</label>
-            <select name="ust" ref="ust" value={this.state.ust} className={this.state.ustErrorClass} onChange={this.handleChange}>
+            <select name="ust" ref="ust" value={this.state.ust} className={this.state.ustErrorClass} onChange={this.onInputChange}>
               <option value="0">0</option> 
               <option value="7">7</option>
               <option value="19">19</option>
@@ -165,23 +138,48 @@ define(function(require) {
       );
     },
 
+    onCloseClick: function(event) {
+      event.preventDefault();
+      EAU.vent.trigger("modal:close");
+    },
+
+    onError: function(model, xhr) {
+      // TODO this will break things until the backend validater is modified
+
+      var response = JSON.parse(xhr.responseText);
+
+      this.setState({
+        currentState: "error",
+        error: new Error("Error: " + response.message)
+      });
+
+      // TODO handle wrongly added model in collection
+    },
+    
+    onInputChange: function(evt) {
+      var o = {};
+
+      o[evt.target.name] = evt.target.value;
+      this.setState(o);
+    },
+
     onSubmit: function(event) {
       var data = {
-          type: this.state.type,
-          // special handling for the desciption field. Since we apply typeahead
-          // to this DOM element we use it as "Uncontrolled Component" (see
-          // react docs)
-          description: this.refs.desc.getDOMNode().value,
-          value: this.state.value,
-          ust: this.state.ust,
-          booked: new Date(this.state.year, this.state.month - 1, this.state.day)
-        },
-        options = {
-          validate: true,
-          parse: true,
-          success: this.onSuccess,
-          error: this.onError
-        };
+        type: this.state.type,
+        // special handling for the desciption field. Since we apply typeahead
+        // to this DOM element we use it as "Uncontrolled Component" (see
+        // react docs)
+        description: this.refs.desc.getDOMNode().value,
+        value: this.state.value,
+        ust: this.state.ust,
+        booked: new Date(this.state.year, this.state.month - 1, this.state.day)
+      },
+      options = {
+        validate: true,
+        parse: true,
+        success: this.onSuccess,
+        error: this.onError
+      };
 
       event.preventDefault();
 
@@ -206,24 +204,6 @@ define(function(require) {
       return false;
     },
 
-    onCloseClick: function(event) {
-      event.preventDefault();
-      EAU.vent.trigger("modal:close");
-    },
-
-    onError: function(model, xhr) {
-      // TODO this will break things until the backend validater is modified
-
-      var response = JSON.parse(xhr.responseText);
-
-      this.setState({
-        currentState: "error",
-        error: new Error("Error: " + response.message)
-      });
-
-      // TODO handle wrongly added model in collection
-    },
-
     onSuccess: function() {
       this.refs.desc.getDOMNode().value = "";
       this.setState(this.getInitialState());
@@ -231,6 +211,24 @@ define(function(require) {
       if (this.props.field) {
         EAU.vent.trigger("modal:close");
       }
+    },
+
+    onTypeaheadSelected: function(evt, data) {
+      var $input = $(this.getDOMNode()).find("input[name=desc]");
+
+      // manually close typeahead because this is not done by default
+      // on autocomplete
+      $input.typeahead("close");
+
+      this.setState({
+        type: data && data.type,
+        day: data && data.booked.getDate(),
+        month: data && data.booked.getMonth() + 1,
+        year: data && data.booked.getFullYear(),
+        desc: data && data.description,
+        value: data && data.value,
+        ust: data && data.ust
+      });
     }
 
   }); // end LayerAdd
