@@ -5,6 +5,7 @@ define(function(require) {
   var EAU = require("app/ns");
   var React = require("react");
   var $ = require("jquery");
+  var _ = require("underscore");
 
   require("typeahead");
 
@@ -206,7 +207,9 @@ define(function(require) {
 
     onSuccess: function() {
       this.refs.desc.getDOMNode().value = "";
-      this.setState(this.getInitialState());
+      this.setState(_.extend(this.getInitialState(), {
+        type: this.state.type
+      }));
 
       if (this.props.field) {
         EAU.vent.trigger("modal:close");
