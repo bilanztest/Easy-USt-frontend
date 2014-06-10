@@ -23,9 +23,7 @@ define(function(require) {
         errorField: null,
 
         type: "in",
-        day: "",
-        month: "",
-        year: "",
+        date: "2014-01-01",
         desc: "",
         value: "",
         ust: 19,
@@ -41,9 +39,7 @@ define(function(require) {
       // set field states if this is an edit
       this.setState({
         type: (field && field.get("type")) || this.state.type,
-        day: field && new Date(field.get("booked")).getDate(),
-        month: field && field.get("booked").getMonth() + 1,
-        year: field && field.get("booked").getFullYear(),
+        date: field && field.get("booked").toJSON().split("T")[0] || this.state.date,
         desc: field && field.get("description"),
         value: field && field.get("value"),
         ust: field && field.get("ust") || "19"
@@ -107,14 +103,8 @@ define(function(require) {
               <input type="radio" name="type" ref="typeOut" value="out" checked={this.state.type === "out"} className={this.state.typeErrorClass} onChange={this.onInputChange}/> Ausgabe
             </label><br />
 
-            <label htmlFor="day">Tag</label>
-            <input type="number" step="1" min="1" max="31" name="day" ref="day" value={this.state.day} className={this.state.bookedErrorClass} onChange={this.onInputChange}/>
-
-            <label htmlFor="month">Monat</label>
-            <input type="number" step="1" min="1" max="12" name="month" ref="month" value={this.state.month} className={this.state.bookedErrorClass} onChange={this.onInputChange}/>
-
-            <label htmlFor="year">Jahr</label>
-            <input type="number" step="1" min="2010" max="2015" name="year" ref="year" value={this.state.year} className={this.state.bookedErrorClass} onChange={this.onInputChange}/><br />
+            <label htmlFor="date">Buchungtag</label><br/>
+            <input type="date" name="date" ref="date" value={this.state.date} className={this.state.bookedErrorClass} onChange={this.onInputChange}/><br />
             
             <label htmlFor="desc">Beschreibung</label>
             <input type="text" name="desc" ref="desc" defaultValue={this.state.desc} className={this.state.descErrorClass}/><br />
@@ -173,7 +163,7 @@ define(function(require) {
         description: this.refs.desc.getDOMNode().value,
         value: this.state.value,
         ust: this.state.ust,
-        booked: new Date(this.state.year, this.state.month - 1, this.state.day)
+        booked: new Date(this.state.date)
       },
       options = {
         validate: true,
@@ -208,7 +198,8 @@ define(function(require) {
     onSuccess: function() {
       this.refs.desc.getDOMNode().value = "";
       this.setState(_.extend(this.getInitialState(), {
-        type: this.state.type
+        type: this.state.type,
+        date: this.state.date
       }));
 
       if (this.props.field) {
