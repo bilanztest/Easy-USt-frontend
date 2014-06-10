@@ -64,9 +64,6 @@ define(function(require) {
         }
       });
 
-      ins.sort(this.sortByBooked);
-      outs.sort(this.sortByBooked);
-
       return (
         <div className="eau-main-content">
           <div className="eau-main-content-fields-header">
@@ -100,18 +97,6 @@ define(function(require) {
           </div>
         </div>
       );
-    },
-
-    sortByBooked: function(a, b) {
-      if (a.get("booked").getTime() < b.get("booked").getTime()) {
-        return -1;
-      }
-
-      if (a.get("booked").getTime() > b.get("booked").getTime()) {
-        return 1;
-      }
-
-      return 0;
     },
 
     // TODO check if still fetching

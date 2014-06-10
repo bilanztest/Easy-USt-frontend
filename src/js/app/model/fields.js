@@ -15,11 +15,13 @@ define(function(require) {
   var Fields = Backbone.Collection.extend({
     model: Field,
     url: "/api/field",
+    comparator: "booked",
     isFetched: false,
 
     initialize: function() {
       this.on("reset", this.onReset, this);
       this.on("add", this.onAdd, this);
+      this.on("change:booked", this.onBookedChange, this);
     },
 
     onReset: function() {
@@ -39,6 +41,10 @@ define(function(require) {
 
     onAdd: function(model) {
       this.engine.add([model.toJSON()]);
+    },
+
+    onBookedChange: function(model) {
+      this.sort();
     }
     
   }); // end Fields
