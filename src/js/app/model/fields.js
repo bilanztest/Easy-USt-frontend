@@ -15,6 +15,7 @@ define(function(require) {
   var Fields = Backbone.Collection.extend({
     model: Field,
     url: "/api/field",
+    isFetched: false,
 
     initialize: function() {
       this.on("reset", this.onReset, this);
@@ -22,6 +23,8 @@ define(function(require) {
     },
 
     onReset: function() {
+      this.isFetched = true;
+
       // create "search engine" for typeahead
       this.engine = new Bloodhound({
         name: "main",

@@ -8,7 +8,6 @@ define(function(require) {
   var formater = require("app/utils/formater");
 
   var EAU = require("app/ns");
-  var Fields = require("app/model/fields");
   var LayerAdd = require("jsx!app/view/layer_add");
   var FieldView = require("jsx!app/view/field_view");
 
@@ -23,7 +22,6 @@ define(function(require) {
       var dateRanges = this.createDateRanges();
 
       return {
-        fields: new Fields(),
         fetching: true,
         sendSuccess: false,
         dateRanges: dateRanges,
@@ -32,17 +30,21 @@ define(function(require) {
     },
 
     componentWillMount: function() {
-      this.state.fields.on("reset", function() {
+      if (this.props.fields.isFetched) {
         this.setState(_.extend(this.calcTax(this.state.dateRanges, this.state.currentDateRangeIndex), {
           fetching: false
         }));
-      }, this);
-
-      this.state.fields.fetch({reset: true});
+      } else {
+        this.props.fields.on("reset", function() {
+          this.setState(_.extend(this.calcTax(this.state.dateRanges, this.state.currentDateRangeIndex), {
+            fetching: false
+          }));
+        }, this);
+      }
     },
 
     componentWillUnmount: function() {
-      this.state.fields.off(null, null, this);
+      this.props.fields.off(null, null, this);
     },
 
     handleChange: function(evt) {
@@ -115,7 +117,7 @@ define(function(require) {
         valueIn = 0, valueTaxIn = 0, valueOut = 0, valueTaxOut = 0, valueTaxDiff = 0;
 
       // filter fields for current range
-      this.state.fields.filter(function(field) {
+      this.props.fields.filter(function(field) {
         return field.get("booked") > rangeStart && field.get("booked") < rangeEnd;
       })
       // sum in's and out's

@@ -5,7 +5,6 @@ define(function(require) {
   var React = require("react");
 
   var EAU = require("app/ns");
-  var Fields = require("app/model/fields");
   var LayerAdd = require("jsx!app/view/layer_add");
   var FieldView = require("jsx!app/view/field_view");
 
@@ -18,27 +17,30 @@ define(function(require) {
 
     getInitialState: function() {
       return {
-        fields: new Fields(),
         fetching: true
       };
     },
 
     componentWillMount: function() {
-      this.state.fields.on("reset", function() {
+      if (this.props.fields.isFetched) {
         this.setState({
           fetching: false
         });
-      }, this);
+      } else {
+        this.props.fields.on("reset", function() {
+          this.setState({
+            fetching: false
+          });
+        }, this);
+      }
 
-      this.state.fields.on("add remove change", function() {
+      this.props.fields.on("add remove change", function() {
         this.forceUpdate();
       }, this);
-
-      this.state.fields.fetch({reset: true});
     },
 
     componentWillUnmount: function() {
-      this.state.fields.off(null, null, this);
+      this.props.fields.off(null, null, this);
       EAU.vent.trigger("modal:close");
     },
 
@@ -54,7 +56,7 @@ define(function(require) {
         );
       }
 
-      this.state.fields.forEach(function(field) {
+      this.props.fields.forEach(function(field) {
         if (field.get("type") === "in") {
           ins.push(field);
         } else {
@@ -115,8 +117,8 @@ define(function(require) {
     // TODO check if still fetching
     onClickAddField: function(event) {
       var comp = LayerAdd({
-        fields: this.state.fields,
-        typeaheadEngine: this.state.fields.engine
+        fields: this.props.fields,
+        typeaheadEngine: this.props.fields.engine
       });
 
       event.preventDefault();
