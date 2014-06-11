@@ -50,7 +50,7 @@ define(function(require) {
     getFieldsByRangeAndType: function(start, end, type) {
       return this.filter(function(model) {
         return model.get("type") === type &&
-              model.get("booked") > start.toDate() &&
+              model.get("booked") >= start.toDate() &&
               model.get("booked") < end.toDate();
       });
     }
