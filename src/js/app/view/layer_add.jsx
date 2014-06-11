@@ -23,7 +23,7 @@ define(function(require) {
         errorField: null,
 
         type: "in",
-        date: "2014-01-01",
+        date: this.props.date || "2014-01-01",
         desc: "",
         value: "",
         ust: 19,

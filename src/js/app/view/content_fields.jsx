@@ -17,6 +17,7 @@ define(function(require) {
 
     getInitialState: function() {
       return {
+        displayBy: "month",
         fetching: true
       };
     },
@@ -44,10 +45,13 @@ define(function(require) {
       EAU.vent.trigger("modal:close");
     },
 
-    render: function() {
-      var ins = [],
-        outs = [];
+    handleChange: function(evt) {
+      var o = {};
+      o[evt.target.name] = evt.target.value;
+      this.setState(o);
+    },
 
+    render: function() {
       if (this.state.fetching) {
         return (
           <div className="eau-main-content">
@@ -56,61 +60,115 @@ define(function(require) {
         );
       }
 
-      this.props.fields.forEach(function(field) {
-        if (field.get("type") === "in") {
-          ins.push(field);
-        } else {
-          outs.push(field);
-        }
-      });
-
       return (
         <div className="eau-main-content">
           <div className="eau-main-content-fields-header">
-            <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> | <a href="/send" data-link="main">Jetzt übertragen</a>
+            <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> |
+            <a href="/send" data-link="main"> Jetzt übertragen</a> |
+            <span> Ansicht: </span>
+            <select name="displayBy" value={this.state.displayBy} onChange={this.handleChange}>
+              <option value="month">Monat</option>
+              <option value="quarter">Quartal</option>
+            </select>
           </div>
           <div className="eau-fields-table">
             <h2>Einnahmen</h2>
             <h2>Ausgaben</h2>
           </div>
-          <div className="eau-fields-table">
-            <div>
-              <table>
-                <tbody>
-                  {
-                    ins.map(function(field, index) {
-                      return <FieldView type="in" field={field} index={index}/>;
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <h2>Ausgaben</h2>
-              <table>
-                <tbody>
-                  {
-                    outs.map(function(field, index) {
-                      return <FieldView type="out" field={field} index={index}/>;
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-          </div>
+          {
+            this.getFieldsSortedAndFilteredByDate().map(function(item) {
+              return (
+                <div className="eau-fields-range-box">
+                  <h3><a href="#" data-date={item.date} onClick={this.onRangeBoxClick}>{item.label}</a></h3>
+                  <div className="eau-fields-table">
+                    <div>
+                      <table>
+                        <tbody>
+                          {
+                            item.ins.map(function(field, index) {
+                              return <FieldView type="in" field={field} index={index}/>;
+                            })
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                    <div>
+                      <table>
+                        <tbody>
+                          {
+                            item.outs.map(function(field, index) {
+                              return <FieldView type="out" field={field} index={index}/>;
+                            })
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )
+            }, this)
+          }
         </div>
       );
     },
 
-    // TODO check if still fetching
-    onClickAddField: function(event) {
-      var comp = LayerAdd({
-        fields: this.props.fields,
-        typeaheadEngine: this.props.fields.engine
-      });
+    getFieldsSortedAndFilteredByDate: function() {
+      var resultArray = [],
+        earliestDate = moment(this.props.fields.at(0).get("booked")).lang("de"),
+        currentMonth = moment().startOf(this.state.displayBy),
+        i, currentDate, start, end, label;
 
+      for (i = 0; true; i++) {
+        currentDate = earliestDate.clone().add(this.state.displayBy + "s", i);
+        start = currentDate.clone().startOf(this.state.displayBy);
+        end = currentDate.clone().endOf(this.state.displayBy);
+        label;
+
+        if (this.state.displayBy === "month") {
+          label = currentDate.format("MMMM YYYY");
+        } else if (this.state.displayBy === "quarter") {
+          label = "Q" + currentDate.format("Q YYYY")
+        }
+
+        resultArray.push({
+          label: label,
+          date: currentDate.clone().startOf(this.state.displayBy).add("h", 12).format("YYYY-MM-DD"),
+          ins: this.props.fields.getFieldsByRangeAndType(start, end, "in"),
+          outs: this.props.fields.getFieldsByRangeAndType(start, end, "out")
+        });
+
+        if (currentDate.startOf(this.state.displayBy) >= currentMonth) {
+          break;
+        }
+
+        // better save then sorry
+        if (i >= 100) {
+          console.error("force abort loop")
+          break;
+        }
+      };
+
+      return resultArray;
+    },
+
+    onClickAddField: function(event) {
       event.preventDefault();
-      EAU.vent.trigger("modal:open", comp);
+
+      EAU.vent.trigger("modal:open", new LayerAdd({
+        fields: this.props.fields,
+        typeaheadEngine: this.props.fields.engine,
+        date: moment().startOf("month").add("h", 12).format("YYYY-MM-DD")
+      }));
+    },
+
+    onRangeBoxClick: function(event) {
+      event.preventDefault();
+
+      EAU.vent.trigger("modal:open", new LayerAdd({
+        fields: this.props.fields,
+        typeaheadEngine: this.props.fields.engine,
+        date: event.target.getAttribute("data-date")
+      }));
     }
 
   }); // end ContentShow
