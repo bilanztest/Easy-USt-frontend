@@ -114,9 +114,14 @@ define(function(require) {
 
     getFieldsSortedAndFilteredByDate: function() {
       var resultArray = [],
-        earliestDate = moment(this.props.fields.at(0).get("booked")).lang("de"),
         currentMonth = moment().startOf(this.state.displayBy),
-        i, currentDate, start, end, label;
+        earliestDate, i, currentDate, start, end, label;
+
+      if (this.props.fields && this.props.fields.length > 0) {
+        earliestDate = moment(this.props.fields.at(0).get("booked")).lang("de");
+      } else {
+        earliestDate = moment().lang("de").startOf("month").add("h", 8);
+      }
 
       for (i = 0; true; i++) {
         currentDate = earliestDate.clone().add(this.state.displayBy + "s", i);
