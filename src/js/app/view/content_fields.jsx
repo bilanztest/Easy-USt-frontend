@@ -5,7 +5,6 @@ define(function(require) {
   var React = require("react");
 
   var EAU = require("app/ns");
-  var Fields = require("app/model/fields");
   var LayerAdd = require("jsx!app/view/layer_add");
   var FieldView = require("jsx!app/view/field_view");
 
@@ -18,34 +17,41 @@ define(function(require) {
 
     getInitialState: function() {
       return {
-        fields: new Fields(),
+        displayBy: "month",
         fetching: true
       };
     },
 
     componentWillMount: function() {
-      this.state.fields.on("reset", function() {
+      if (this.props.fields.isFetched) {
         this.setState({
           fetching: false
         });
-      }, this);
+      } else {
+        this.props.fields.on("reset", function() {
+          this.setState({
+            fetching: false
+          });
+        }, this);
+      }
 
-      this.state.fields.on("add remove change", function() {
+      this.props.fields.on("add remove change", function() {
         this.forceUpdate();
       }, this);
-
-      this.state.fields.fetch({reset: true});
     },
 
     componentWillUnmount: function() {
-      this.state.fields.off(null, null, this);
+      this.props.fields.off(null, null, this);
       EAU.vent.trigger("modal:close");
     },
 
-    render: function() {
-      var ins = [],
-        outs = [];
+    handleChange: function(evt) {
+      var o = {};
+      o[evt.target.name] = evt.target.value;
+      this.setState(o);
+    },
 
+    render: function() {
       if (this.state.fetching) {
         return (
           <div className="eau-main-content">
@@ -54,73 +60,115 @@ define(function(require) {
         );
       }
 
-      this.state.fields.forEach(function(field) {
-        if (field.get("type") === "in") {
-          ins.push(field);
-        } else {
-          outs.push(field);
-        }
-      });
-
-      ins.sort(this.sortByBooked);
-      outs.sort(this.sortByBooked);
-
       return (
         <div className="eau-main-content">
           <div className="eau-main-content-fields-header">
-            <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> | <a href="/send" data-link="main">Jetzt übertragen</a>
+            <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> |
+            <a href="/send" data-link="main"> Jetzt übertragen</a> |
+            <span> Ansicht: </span>
+            <select name="displayBy" value={this.state.displayBy} onChange={this.handleChange}>
+              <option value="month">Monat</option>
+              <option value="quarter">Quartal</option>
+            </select>
           </div>
-          <div className="eau-fields-tables">
-            <div className="eau-fields-table-container">
-              <h2>Einnahmen</h2>
-              <table className="eau-fields-table">
-                <tbody>
-                  {
-                    ins.map(function(field, index) {
-                      return <FieldView type="in" field={field} index={index}/>;
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-            <div className="eau-table-container">
-              <h2>Ausgaben</h2>
-              <table className="eau-fields-table">
-                <tbody>
-                  {
-                    outs.map(function(field, index) {
-                      return <FieldView type="out" field={field} index={index}/>;
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
+          <div className="eau-fields-table">
+            <h2>Einnahmen</h2>
+            <h2>Ausgaben</h2>
           </div>
+          {
+            this.getFieldsSortedAndFilteredByDate().map(function(item) {
+              return (
+                <div className="eau-fields-range-box">
+                  <h3><a href="#" data-date={item.date} onClick={this.onRangeBoxClick}>{item.label}</a></h3>
+                  <div className="eau-fields-table">
+                    <div>
+                      <table>
+                        <tbody>
+                          {
+                            item.ins.map(function(field, index) {
+                              return <FieldView type="in" field={field} index={index}/>;
+                            })
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                    <div>
+                      <table>
+                        <tbody>
+                          {
+                            item.outs.map(function(field, index) {
+                              return <FieldView type="out" field={field} index={index}/>;
+                            })
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )
+            }, this)
+          }
         </div>
       );
     },
 
-    sortByBooked: function(a, b) {
-      if (a.get("booked").getTime() < b.get("booked").getTime()) {
-        return -1;
-      }
+    getFieldsSortedAndFilteredByDate: function() {
+      var resultArray = [],
+        earliestDate = moment(this.props.fields.at(0).get("booked")).lang("de"),
+        currentMonth = moment().startOf(this.state.displayBy),
+        i, currentDate, start, end, label;
 
-      if (a.get("booked").getTime() > b.get("booked").getTime()) {
-        return 1;
-      }
+      for (i = 0; true; i++) {
+        currentDate = earliestDate.clone().add(this.state.displayBy + "s", i);
+        start = currentDate.clone().startOf(this.state.displayBy);
+        end = currentDate.clone().endOf(this.state.displayBy);
+        label;
 
-      return 0;
+        if (this.state.displayBy === "month") {
+          label = currentDate.format("MMMM YYYY");
+        } else if (this.state.displayBy === "quarter") {
+          label = "Q" + currentDate.format("Q YYYY")
+        }
+
+        resultArray.push({
+          label: label,
+          date: currentDate.clone().startOf(this.state.displayBy).add("h", 12).format("YYYY-MM-DD"),
+          ins: this.props.fields.getFieldsByRangeAndType(start, end, "in"),
+          outs: this.props.fields.getFieldsByRangeAndType(start, end, "out")
+        });
+
+        if (currentDate.startOf(this.state.displayBy) >= currentMonth) {
+          break;
+        }
+
+        // better save then sorry
+        if (i >= 100) {
+          console.error("force abort loop")
+          break;
+        }
+      };
+
+      return resultArray;
     },
 
-    // TODO check if still fetching
     onClickAddField: function(event) {
-      var comp = LayerAdd({
-        fields: this.state.fields,
-        typeaheadEngine: this.state.fields.engine
-      });
-
       event.preventDefault();
-      EAU.vent.trigger("modal:open", comp);
+
+      EAU.vent.trigger("modal:open", new LayerAdd({
+        fields: this.props.fields,
+        typeaheadEngine: this.props.fields.engine,
+        date: moment().startOf("month").add("h", 12).format("YYYY-MM-DD")
+      }));
+    },
+
+    onRangeBoxClick: function(event) {
+      event.preventDefault();
+
+      EAU.vent.trigger("modal:open", new LayerAdd({
+        fields: this.props.fields,
+        typeaheadEngine: this.props.fields.engine,
+        date: event.target.getAttribute("data-date")
+      }));
     }
 
   }); // end ContentShow

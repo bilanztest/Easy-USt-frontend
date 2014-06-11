@@ -1,17 +1,34 @@
-.eau-fields-tables {
-  @extend .clearfix;
-}
-
-.eau-fields-table-container {
-  float: left;
-  width: 50%;
-}
-
 .eau-fields-table {
-  border-collapse: collapse;
-
+  display: table;
+  width: 100%;
+  & > * {
+    display: table-cell;
+    width: 50%;
+  }
   td, th {
     padding: 0.25em 0.75em 0.25em 0;
     text-align: left;
+  }
+}
+
+.eau-fields-range-box {
+  margin-bottom: 20px;
+  h3 {
+      text-align: center;
+      line-height: 0;
+      border-bottom: 1px solid rgb(232, 232, 232);
+      margin: 1em 0 1.5em;
+      a {
+        color: grey;
+      }
+  }
+  h3:first-line {
+      background-color: white;
+  }
+  h3:before {
+      content: "\a0\a0\a0";
+  }
+  h3:after {
+      content: "\a0\a0\a0";
   }
 }
