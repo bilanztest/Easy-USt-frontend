@@ -18,7 +18,9 @@ define(function(require) {
     getInitialState: function() {
       return {
         displayBy: "month",
-        fetching: true
+        fetching: true,
+        lastAddedFieldDate: moment().startOf("month").add("h", 12).format("YYYY-MM-DD"),
+        lastAddedFieldType: "in"
       };
     },
 
@@ -35,8 +37,15 @@ define(function(require) {
         }, this);
       }
 
-      this.props.fields.on("add remove change", function() {
+      this.props.fields.on("remove change", function() {
         this.forceUpdate();
+      }, this);
+
+      this.props.fields.on("add", function(model) {
+        this.setState({
+          lastAddedFieldDate: model.get("booked").toJSON().split("T")[0],
+          lastAddedFieldType: model.get("type")
+        });
       }, this);
     },
 
@@ -162,7 +171,8 @@ define(function(require) {
       EAU.vent.trigger("modal:open", new LayerAdd({
         fields: this.props.fields,
         typeaheadEngine: this.props.fields.engine,
-        date: moment().startOf("month").add("h", 12).format("YYYY-MM-DD")
+        date: this.state.lastAddedFieldDate,
+        type: this.state.lastAddedFieldType
       }));
     },
 
@@ -172,7 +182,8 @@ define(function(require) {
       EAU.vent.trigger("modal:open", new LayerAdd({
         fields: this.props.fields,
         typeaheadEngine: this.props.fields.engine,
-        date: event.target.getAttribute("data-date")
+        date: event.target.getAttribute("data-date"),
+        type: this.state.lastAddedFieldType
       }));
     }
 
