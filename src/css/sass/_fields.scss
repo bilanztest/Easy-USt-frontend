@@ -1,13 +1,31 @@
 .eau-fields-table {
   display: table;
+  table-layout : fixed;
   width: 100%;
   & > * {
     display: table-cell;
-    width: 50%;
+  }
+  table {
+    width: 100%;
+    .description {
+      width: 100%;
+    }
   }
   td, th {
-    padding: 0.25em 0.75em 0.25em 0;
+    padding: 0.1em 0.45em 0.1em 0;
     text-align: left;
+  }
+  .table-spacer {
+    width: 30px;
+  }
+  h2 {
+    width: 100%;
+  }
+  .grey {
+    color: lightgrey;
+  }
+  .align-right {
+    text-align: right;
   }
 }
 

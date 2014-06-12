@@ -55,3 +55,16 @@ h2 {
 .clearfix:after {
   clear: both;
 }
+
+.icon {
+  display: inline-block;
+  color: grey;
+}
+
+.icon-edit:before {
+  content: "\270E";
+}
+
+.icon-delete:before {
+  content: "\2718";
+}

@@ -82,6 +82,7 @@ define(function(require) {
           </div>
           <div className="eau-fields-table">
             <h2>Einnahmen</h2>
+            <div className="table-spacer">&nbsp;</div>
             <h2>Ausgaben</h2>
           </div>
           {
@@ -101,6 +102,7 @@ define(function(require) {
                         </tbody>
                       </table>
                     </div>
+                    <div className="table-spacer">&nbsp;</div>
                     <div>
                       <table>
                         <tbody>

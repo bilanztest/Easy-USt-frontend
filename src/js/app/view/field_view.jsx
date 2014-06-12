@@ -19,12 +19,14 @@ define(function(require) {
       return (
         <tr key={this.props.type + this.props.index}>
           <td>{formater.date(this.props.field.get("booked"), "dd.MM.")}</td>
-          <td>{this.props.field.get("description")}</td>
-          <td>{this.props.field.get("value") + "€"}</td>
-          <td>{this.props.field.get("ust") + "%"}</td>
-          <td>{formater.round(this.props.field.get("value") * (this.props.field.get("ust") / 100), 100) + "€"}</td>
-          <td><a href="#" onClick={this.onEditItem}>edit</a></td>
-          <td><a href="#" onClick={this.onRemoveItem}>remove</a></td>
+          <td className="description">{this.props.field.get("description")}</td>
+          <td className="align-right">{this.props.field.get("value") + "€"}</td>
+          <td className="grey">*</td>
+          <td className="align-right">{this.props.field.get("ust") + "%"}</td>
+          <td className="grey">&#61;</td>
+          <td className="align-right">{formater.round(this.props.field.get("value") * (this.props.field.get("ust") / 100), 100) + "€"}</td>
+          <td><a href="#" onClick={this.onEditItem}><div className="icon icon-edit"></div></a></td>
+          <td><a href="#" onClick={this.onRemoveItem}><div className="icon icon-delete"></div></a></td>
         </tr>
       );
     },
