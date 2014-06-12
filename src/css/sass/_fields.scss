@@ -9,9 +9,15 @@
     width: 100%;
     .description {
       width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   td, th {
+    width: 1px;
     padding: 0.1em 0.45em 0.1em 0;
     text-align: left;
   }
