@@ -72,13 +72,19 @@ define(function(require) {
       return (
         <div className="eau-main-content">
           <div className="eau-main-content-fields-header">
-            <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> |
-            <a href="/send" data-link="main"> Jetzt übertragen</a> |
-            <span> Ansicht: </span>
-            <select name="displayBy" value={this.state.displayBy} onChange={this.handleChange}>
-              <option value="month">Monat</option>
-              <option value="quarter">Quartal</option>
-            </select>
+            <div className="eau-fields-table">
+              <div>
+                <a href="/add" onClick={this.onClickAddField}>+ hinzufügen</a> |
+                <span> Ansicht: </span>
+                <select name="displayBy" value={this.state.displayBy} onChange={this.handleChange}>
+                  <option value="month">Monat</option>
+                  <option value="quarter">Quartal</option>
+                </select>
+              </div>
+              <div className="align-right">
+                <a href="/send" data-link="main"> Jetzt übertragen</a>
+              </div>
+            </div>
           </div>
           <div className="eau-fields-table">
             <h2>Einnahmen</h2>
