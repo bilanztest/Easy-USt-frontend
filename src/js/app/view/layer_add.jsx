@@ -110,7 +110,7 @@ define(function(require) {
             <input type="text" name="desc" ref="desc" defaultValue={this.state.desc} className={this.state.descErrorClass}/><br />
 
             <label htmlFor="value">Wert</label>
-            <input type="number" step="1" min="0" max="1000000" name="value" ref="value" value={this.state.value} className={this.state.valueErrorClass} onChange={this.onInputChange}/><br />
+            <input type="number" step="0.01" min="0" max="1000000" name="value" ref="value" value={this.state.value} className={this.state.valueErrorClass} onChange={this.onInputChange}/><br />
 
             <label htmlFor="ust">Umsatzsteuer %</label>
             <select name="ust" ref="ust" value={this.state.ust} className={this.state.ustErrorClass} onChange={this.onInputChange}>
