@@ -103,8 +103,8 @@ define(function(require) {
               <input type="radio" name="type" ref="typeOut" value="out" checked={this.state.type === "out"} className={this.state.typeErrorClass} onChange={this.onInputChange}/> Ausgabe
             </label><br />
 
-            <label htmlFor="date">Buchungtag</label><br/>
-            <input type="date" name="date" ref="date" value={this.state.date} className={this.state.bookedErrorClass} onChange={this.onInputChange}/><br />
+            <label htmlFor="date">Buchungtag</label>
+            <input type="date" name="date" ref="date" value={this.state.date} autoFocus className={this.state.bookedErrorClass} onChange={this.onInputChange}/><br />
             
             <label htmlFor="desc">Beschreibung</label>
             <input type="text" name="desc" ref="desc" defaultValue={this.state.desc} className={this.state.descErrorClass}/><br />
