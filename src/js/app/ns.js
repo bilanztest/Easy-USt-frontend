@@ -19,12 +19,10 @@ define(function(require) {
   // override BB's sync
   Backbone.sync = function(method, model, options) {
     options.beforeSend = function(xhr, settings) {
-      var q = query.parse(settings.url),
-        token = window.EAU.user.get("token");
+      var token = window.EAU.user.get("token");
 
       if (typeof token !== "undefined") {
-        q.set("token", token);
-        settings.url += q.toString(true);
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
       }
     };
     sync(method, model, options);
