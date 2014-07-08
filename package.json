@@ -26,6 +26,7 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint src/js/easy.js src/js/app/* --rulesdir eslint_rules",
-    "deploy": "gulp deploy --env=production"
+    "deploy": "gulp deploy --env=production",
+    "watch": "gulp watch"
   }
 }

@@ -34,6 +34,17 @@ gulp.task("css", function() {
     .pipe(gulp.dest("build"));
 });
 
+gulp.task("css-dev", function() {
+  return gulp.src("src/css/sass/*.scss")
+    .pipe(sass({
+      trace: false,
+      style: "compressed"
+    }).on("error", function() {
+      console.error("SASS error", arguments);
+    }))
+    .pipe(gulp.dest("src/css/"));
+});
+
 
 gulp.task("html-copy", function() {
   return gulp.src("src/index.html")
@@ -140,4 +151,8 @@ gulp.task("build", function(callback) {
     "post-clean",
     callback
   );
+});
+
+gulp.task("watch", function() {
+  gulp.watch("src/css/sass/**/*.scss", ["css-dev"]);
 });
