@@ -25,7 +25,8 @@ define(function(require) {
         fetching: true,
         sendSuccess: false,
         dateRanges: dateRanges,
-        currentDateRangeIndex: 1 // last month is default
+        // last month is default
+        currentDateRangeIndex: 1
       };
     },
 
@@ -49,17 +50,16 @@ define(function(require) {
 
     handleChange: function(evt) {
       var o = {};
+
       o[evt.target.name] = evt.target.value;
 
       if (evt.target.name === "currentDateRangeIndex") {
         _.extend(o, this.calcTax(this.state.dateRanges, evt.target.value));
       }
-
       this.setState(o);
     },
 
     render: function() {
-
       if (this.state.fetching) {
         return (
           <div className="easy-modal-send-data">
@@ -114,7 +114,11 @@ define(function(require) {
         rangeMoment = moment().lang("de").subtract(currentDateRange.type, currentDateRange.subtract),
         rangeStart = rangeMoment.clone().startOf(currentDateRange.type),
         rangeEnd = rangeMoment.clone().endOf(currentDateRange.type),
-        valueIn = 0, valueTaxIn = 0, valueOut = 0, valueTaxOut = 0, valueTaxDiff = 0;
+        valueIn = 0,
+        valueTaxIn = 0,
+        valueOut = 0,
+        valueTaxOut = 0,
+        valueTaxDiff = 0;
 
       // filter fields for current range
       this.props.fields.filter(function(field) {
@@ -122,12 +126,16 @@ define(function(require) {
       })
       // sum in's and out's
       .forEach(function(field) {
+        var val = field.get("value"),
+          ust = field.get("ust");
+
         if (field.get("type") === "in") {
-          valueIn += field.get("value");
-          valueTaxIn += field.get("value") * (field.get("ust") / 100);
+          valueIn += val;
+          valueTaxIn += val / (ust + 100) * ust;
+
         } else if (field.get("type") === "out") {
-          valueOut += field.get("value");
-          valueTaxOut += field.get("value") * (field.get("ust") / 100);
+          valueOut += val;
+          valueTaxOut += val / (ust + 100) * ust;
         }
       });
 
@@ -143,13 +151,13 @@ define(function(require) {
     },
 
     createDateRanges: function() {
-      var dateRanges = [];
+      var i, dateRanges = [];
 
-      for (var i = 0; i < 6; i++) {
+      for (i = 0; i < 6; i++) {
         dateRanges.push(_.extend(this.createDateRange("months", i), {index: dateRanges.length}));
       };
 
-      for (var i = 0; i < 4; i++) {
+      for (i = 0; i < 4; i++) {
         dateRanges.push(_.extend(this.createDateRange("quarters", i), {index: dateRanges.length}));
       };
 
@@ -166,6 +174,7 @@ define(function(require) {
           type: "months",
           subtract: subtract
         }
+
       } else if (type === "quarters") {
         return {
           label: "Q" + changedMoment.format("Q YYYY"),
