@@ -20,9 +20,9 @@
     "require": true
   },
 
-  "node": true,
+  "node": false,
   "esnext": true,
-  "browser": false,
+  "browser": true,
 
   "boss" : false,
   "curly": true,
