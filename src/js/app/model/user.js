@@ -38,6 +38,7 @@ define(function(require) {
         
         // sync changes to sessionStorage
         this.on("sync", this.onSync, this);
+        this.on("change", this.onSync, this);
       }
 
       console.log("User data", data);
@@ -88,11 +89,15 @@ define(function(require) {
     },
 
     onSync: function() {
+      var data = this.toJSON();
+
+      console.log("USER onSync", data);
+
       // don't save pwd to sessionStorage
-      this.unset("pwd", {silent: true});
+      delete data.pwd;
 
       if (this.isLoggedIn()) {
-        sessionStorage.setItem("user", JSON.stringify(this.toJSON()));
+        sessionStorage.setItem("user", JSON.stringify(data));
       }
     }
   }); // end User
