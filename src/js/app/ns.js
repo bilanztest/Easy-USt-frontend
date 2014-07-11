@@ -2,10 +2,12 @@ define(function(require) {
 
   "use strict";
 
+  var $ = require("jquery");
   var _ = require("underscore");
-  var query = require("app/utils/query");
+  var utils = require("app/utils/misc");
+  
   var Backbone = require("backbone");
-  var sync = Backbone.sync;
+  var backboneSync = Backbone.sync;
 
   window.EAU = window.EAU || {};
   window.EAU.config = {};
@@ -17,7 +19,12 @@ define(function(require) {
   window.EAU.features = require("app/utils/features");
 
   // override BB's sync
-  Backbone.sync = function(method, model, options) {
+  Backbone.sync = function sync(method, model, options) {
+    var lastMethod = method,
+      lastModel = model,
+      lastOptions = utils.clone(options);
+
+    // TODO check for already existing beforeSend method !?
     options.beforeSend = function(xhr, settings) {
       var token = window.EAU.user.get("token");
 
@@ -25,7 +32,33 @@ define(function(require) {
         xhr.setRequestHeader("Authorization", "Bearer " + token);
       }
     };
-    sync(method, model, options);
+
+    options.error = function(xhr, textStatus, message) {
+      var auth = xhr.getResponseHeader("Authorization");
+
+      if (auth === "reissue") {
+        $.ajax({
+          url: "/api/token",
+          type: "PUT",
+          beforeSend: options.beforeSend,
+          contentType: "application/json; charset=utf-8",
+          dataType: "json"
+        }).done(function(data) {
+          // save new token and retry sync
+          window.EAU.user.set("token", data.token);
+          sync(lastMethod, lastModel, lastOptions);
+
+        }).fail(function() {
+          console.error("refresh of token failed");
+          window.EAU.user.logout();
+        });
+      
+      } else {
+        window.EAU.user.logout();
+      }
+    };
+
+    backboneSync(method, model, options);
   };
 
   return window.EAU;

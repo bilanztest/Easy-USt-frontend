@@ -82,10 +82,13 @@ define(function(require) {
     },
 
     logout: function() {
+      // TODO also tell backend about logout
       if (EAU.features.sessionStorage) {
         sessionStorage.removeItem("user");
       }
       this.clear();
+
+      EAU.vent.trigger("goto", "login");
     },
 
     onSync: function() {

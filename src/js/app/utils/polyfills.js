@@ -31,6 +31,21 @@ define(function(require) {
       return FBound;
     };
   }
+
+  // http://stackoverflow.com/a/8566313/388026
+  if (!Object.getOwnPropertyDescriptors) {
+    var getOwnPropertyDescriptors = function(object) {
+      var keys = Object.getOwnPropertyNames(object),
+        returnObj = {},
+        getPropertyDescriptor = function(key) {
+          returnObj[key] = Object.getOwnPropertyDescriptor(object, key);
+        };
+
+      keys.forEach(getPropertyDescriptor);
+      return returnObj;
+    };
+    Object.getOwnPropertyDescriptors = getOwnPropertyDescriptors;
+  }
     
 
   return {};
