@@ -17,7 +17,6 @@ define(function(require) {
   var ContentRegister = require("jsx!app/view/content_register");
   var ContentAbout = require("jsx!app/view/content_about");
   var ContentSettings = require("jsx!app/view/content_settings");
-  var ContentSend = require("jsx!app/view/content_send");
 
   /**
    *
@@ -40,8 +39,7 @@ define(function(require) {
           login: {comp: ContentLogin, loginNeeded: false},
           register: {comp: ContentRegister, loginNeeded: false},
           about: {comp: ContentAbout, loginNeeded: false},
-          settings: {comp: ContentSettings, loginNeeded: true},
-          send: {comp: ContentSend, loginNeeded: true}
+          settings: {comp: ContentSettings, loginNeeded: true}
         }
       };
     },

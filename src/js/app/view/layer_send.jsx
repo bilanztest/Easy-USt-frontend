@@ -16,7 +16,7 @@ define(function(require) {
    *
    *
    */
-  var ContentSend = React.createClass({
+  var LayerSend = React.createClass({
 
     getInitialState: function() {
       var dateRanges = this.createDateRanges();
@@ -62,7 +62,7 @@ define(function(require) {
 
       if (this.state.fetching) {
         return (
-          <div className="eau-main-content">
+          <div className="easy-modal-send-data">
             <p>loading ...</p>
           </div>
         );
@@ -70,7 +70,7 @@ define(function(require) {
 
       if (this.state.sendSuccess) {
         return (
-          <div className="eau-main-content">
+          <div className="easy-modal-send-data">
             <h2>Umsatzsteuerdaten erfolgreich übertragen</h2>
             {
               (function(self) {
@@ -90,7 +90,7 @@ define(function(require) {
       }
 
       return (
-        <div className="eau-main-content">
+        <div className="easy-modal-send-data">
           <h2>Umsatzsteuerdaten übertragen</h2>
           <span>Zeitraum:</span>
           <select name="currentDateRangeIndex" value={this.state.currentDateRangeIndex} onChange={this.handleChange}>
@@ -183,8 +183,8 @@ define(function(require) {
       })
     }
 
-  }); // end ContentSend
+  }); // end LayerSend
 
 
-  return ContentSend;
+  return LayerSend;
 });

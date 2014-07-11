@@ -7,6 +7,7 @@ define(function(require) {
 
   var EAU = require("app/ns");
   var LayerAdd = require("jsx!app/view/layer_add");
+  var LayerSend = require("jsx!app/view/layer_send");
   var FieldView = require("jsx!app/view/field_view");
   var Fields = require("app/model/fields");
 
@@ -56,7 +57,7 @@ define(function(require) {
 
     handleChange: function(evt) {
       var o = {};
-
+      
       o[evt.target.name] = evt.target.value;
       this.setState(o);
     },
@@ -83,7 +84,7 @@ define(function(require) {
                 </select>
               </div>
               <div className="align-right">
-                <a href="/send" data-link="main"> Jetzt übertragen</a>
+                <a href="/send" onClick={this.onClickSend}> Jetzt übertragen</a>
               </div>
             </div>
           </div>
@@ -182,6 +183,14 @@ define(function(require) {
         typeaheadEngine: this.state.fields.engine,
         date: this.state.lastAddedFieldDate,
         type: this.state.lastAddedFieldType
+      }));
+    },
+
+    onClickSend: function(event) {
+      event.preventDefault();
+
+      EAU.vent.trigger("modal:open", new LayerSend({
+        fields: this.state.fields
       }));
     },
 
