@@ -50,6 +50,7 @@ define(function(require) {
         return false;
       }
 
+      // TODO add error handling
       EAU.user.login(email, pwd);
       
       return false;
