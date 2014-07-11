@@ -28,15 +28,15 @@ define(function(require) {
     initialize: function() {
       var data;
 
-      // read user info from localStorage
-      if (EAU.features.localStorage) {
-        data = localStorage.getItem("user");
+      // read user info from sessionStorage
+      if (EAU.features.sessionStorage) {
+        data = sessionStorage.getItem("user");
 
         if (data) {
           data = JSON.parse(data);
         }
         
-        // sync changes to localStorage
+        // sync changes to sessionStorage
         this.on("sync", this.onSync, this);
       }
 
@@ -71,8 +71,8 @@ define(function(require) {
         userData.token = data.token;
         self.set(userData);
 
-        if (EAU.features.localStorage) {
-          localStorage.setItem("user", JSON.stringify(userData));
+        if (EAU.features.sessionStorage) {
+          sessionStorage.setItem("user", JSON.stringify(userData));
         }
 
       }).fail(function() {
@@ -81,18 +81,18 @@ define(function(require) {
     },
 
     logout: function() {
-      if (EAU.features.localStorage) {
-        localStorage.removeItem("user");
+      if (EAU.features.sessionStorage) {
+        sessionStorage.removeItem("user");
       }
       this.clear();
     },
 
     onSync: function() {
-      // don't save pwd to localStorage
+      // don't save pwd to sessionStorage
       this.unset("pwd", {silent: true});
 
       if (this.isLoggedIn()) {
-        localStorage.setItem("user", JSON.stringify(this.toJSON()));
+        sessionStorage.setItem("user", JSON.stringify(this.toJSON()));
       }
     }
   }); // end User

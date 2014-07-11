@@ -27,10 +27,24 @@ define(function(require) {
       }
     };
 
+    var detectSessionStorage = function() {
+      var mod = "sessionStorageCheck";
+
+      try {
+        sessionStorage.setItem(mod, mod);
+        sessionStorage.removeItem(mod);
+        return true;
+      
+      } catch (e) {
+        return false;
+      }
+    };
+
 
     return {
       history: detectHTML5History(),
-      localStorage: detectLocalStorage()
+      localStorage: detectLocalStorage(),
+      sessionStorage: detectSessionStorage()
     };
   };
 
