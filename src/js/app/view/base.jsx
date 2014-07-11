@@ -19,8 +19,6 @@ define(function(require) {
   var ContentSettings = require("jsx!app/view/content_settings");
   var ContentSend = require("jsx!app/view/content_send");
 
-  var Fields = require("app/model/fields");
-
   /**
    *
    *
@@ -34,10 +32,7 @@ define(function(require) {
     },
 
     getInitialState: function() {
-      var fields = new Fields();
-
       return {
-        fields: fields,
         router: new Router(),
         pages: {
           home: {comp: ContentHome, loginNeeded: false},
@@ -52,9 +47,6 @@ define(function(require) {
     },
 
     componentWillMount: function() {
-      if (EAU.user.isLoggedIn()) {
-        this.state.fields.fetch({reset: true});
-      }
       this.state.router.on("route", this.onPathChanged, this);
       EAU.vent.on("goto", this.onGoto, this);
     },
@@ -73,9 +65,7 @@ define(function(require) {
         content = "Error, unauthorized";
       
       } else {
-        content = content.comp({
-          fields: this.state.fields
-        });
+        content = content.comp();
       }
 
       return (

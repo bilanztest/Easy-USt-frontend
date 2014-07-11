@@ -3,10 +3,12 @@ define(function(require) {
   "use strict";
 
   var React = require("react");
+  var moment = require("moment");
 
   var EAU = require("app/ns");
   var LayerAdd = require("jsx!app/view/layer_add");
   var FieldView = require("jsx!app/view/field_view");
+  var Fields = require("app/model/fields");
 
   /**
    *
@@ -17,6 +19,7 @@ define(function(require) {
 
     getInitialState: function() {
       return {
+        fields: new Fields(),
         displayBy: "month",
         fetching: true,
         lastAddedFieldDate: moment().startOf("month").add("h", 12).format("YYYY-MM-DD"),
@@ -25,23 +28,20 @@ define(function(require) {
     },
 
     componentWillMount: function() {
-      if (this.props.fields.isFetched) {
-        this.setState({
-          fetching: false
-        });
+      if (this.state.fields.isFetched) {
+        this.setState({fetching: false});
       } else {
-        this.props.fields.on("reset", function() {
-          this.setState({
-            fetching: false
-          });
+        this.state.fields.on("reset", function() {
+          this.setState({fetching: false});
         }, this);
+        this.state.fields.fetch({reset: true});
       }
 
-      this.props.fields.on("remove change", function() {
+      this.state.fields.on("remove change", function() {
         this.forceUpdate();
       }, this);
 
-      this.props.fields.on("add", function(model) {
+      this.state.fields.on("add", function(model) {
         this.setState({
           lastAddedFieldDate: model.get("booked").toJSON().split("T")[0],
           lastAddedFieldType: model.get("type")
@@ -50,12 +50,13 @@ define(function(require) {
     },
 
     componentWillUnmount: function() {
-      this.props.fields.off(null, null, this);
+      this.state.fields.off(null, null, this);
       EAU.vent.trigger("modal:close");
     },
 
     handleChange: function(evt) {
       var o = {};
+
       o[evt.target.name] = evt.target.value;
       this.setState(o);
     },
@@ -134,8 +135,8 @@ define(function(require) {
         currentMonth = moment().startOf(this.state.displayBy),
         earliestDate, i, currentDate, start, end, label;
 
-      if (this.props.fields && this.props.fields.length > 0) {
-        earliestDate = moment(this.props.fields.at(0).get("booked")).lang("de");
+      if (this.state.fields && this.state.fields.length > 0) {
+        earliestDate = moment(this.state.fields.at(0).get("booked")).lang("de");
       } else {
         earliestDate = moment().lang("de").startOf("month").add("h", 8);
       }
@@ -155,8 +156,8 @@ define(function(require) {
         resultArray.push({
           label: label,
           date: currentDate.clone().startOf(this.state.displayBy).add("h", 12).format("YYYY-MM-DD"),
-          ins: this.props.fields.getFieldsByRangeAndType(start, end, "in"),
-          outs: this.props.fields.getFieldsByRangeAndType(start, end, "out")
+          ins: this.state.fields.getFieldsByRangeAndType(start, end, "in"),
+          outs: this.state.fields.getFieldsByRangeAndType(start, end, "out")
         });
 
         if (currentDate.startOf(this.state.displayBy) >= currentMonth) {
@@ -177,8 +178,8 @@ define(function(require) {
       event.preventDefault();
 
       EAU.vent.trigger("modal:open", new LayerAdd({
-        fields: this.props.fields,
-        typeaheadEngine: this.props.fields.engine,
+        fields: this.state.fields,
+        typeaheadEngine: this.state.fields.engine,
         date: this.state.lastAddedFieldDate,
         type: this.state.lastAddedFieldType
       }));
@@ -188,8 +189,8 @@ define(function(require) {
       event.preventDefault();
 
       EAU.vent.trigger("modal:open", new LayerAdd({
-        fields: this.props.fields,
-        typeaheadEngine: this.props.fields.engine,
+        fields: this.state.fields,
+        typeaheadEngine: this.state.fields.engine,
         date: event.target.getAttribute("data-date"),
         type: this.state.lastAddedFieldType
       }));
