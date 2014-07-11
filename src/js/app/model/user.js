@@ -57,7 +57,7 @@ define(function(require) {
       var self = this;
 
       $.ajax({
-        url: "/api/user/auth",
+        url: "/api/token",
         type: "POST",
         data: JSON.stringify({
           email: email,
