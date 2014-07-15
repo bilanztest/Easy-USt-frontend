@@ -54,7 +54,12 @@ define(function(require) {
         });
       
       } else {
-        window.EAU.user.logout();
+        if (xhr.status === 401) {
+          window.EAU.user.logout();
+        } else {
+          // TODO error handling
+          console.error(textStatus);
+        }
       }
     };
 
