@@ -15,6 +15,7 @@ define(function(require) {
 
     getInitialState: function() {
       var userModel = EAU.user;
+
       return {
         lastName: userModel.get("lastName") || "",
         firstName: userModel.get("firstName") || "",
@@ -30,6 +31,7 @@ define(function(require) {
 
     handleChange: function(evt) {
       var o = {};
+      
       o[evt.target.name] = evt.target.value;
       this.setState(o);
     },
